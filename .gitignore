@@ -1,3 +1,5 @@
+# Compiled java class
+/out
 *.class
 
 # Mobile Tools for Java (J2ME)
@@ -5,6 +7,10 @@
 
 # Package Files #
 *.jar
+
+# Include lib file
+!/lib/*
+
 *.war
 *.ear
 
