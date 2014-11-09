@@ -19,6 +19,8 @@ public class JDBCHelper {
     private static final String PRODUCER_COLUMN = "producer";
     private static final String RELEASE_DATE_COLUMN = "release_date";
     private static final String DESCRIPTION_COLUMN = "description";
+    private static final String CHARACTER_NAME_COLUMN = "name";
+    private static final String CHARACTER_IMAGE_COLUMN = "image_path";
 
     private Connection connection = null;
     private Statement statement = null;
@@ -82,7 +84,7 @@ public class JDBCHelper {
         }
     }
 
-    public ArrayList<AnimeInfo> queryAnime(String query) {
+    public ArrayList<AnimeInfo> queryAnime(String query, boolean needCharacterInfo) {
         ArrayList<AnimeInfo> animeList = new ArrayList<AnimeInfo>();
         try {
             ResultSet resultSet = statement.executeQuery(query);
@@ -94,6 +96,11 @@ public class JDBCHelper {
                 animeInfo.season = resultSet.getString(SEASON_COLUMN);
                 animeInfo.producer = resultSet.getString(PRODUCER_COLUMN);
                 animeInfo.releaseDate = resultSet.getString(RELEASE_DATE_COLUMN);
+
+                if (needCharacterInfo) {
+                    animeInfo.charaterName= resultSet.getString(CHARACTER_NAME_COLUMN);
+                    animeInfo.characterImagePath = resultSet.getString(CHARACTER_IMAGE_COLUMN);
+                }
 
                 String description = resultSet.getString(DESCRIPTION_COLUMN);
                 if (description != null) {

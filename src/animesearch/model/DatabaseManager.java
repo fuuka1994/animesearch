@@ -26,7 +26,15 @@ public class DatabaseManager {
 
     public ArrayList<AnimeInfo> searchAnimeByName(String approximateName) {
         String query = QueryBuilder.buildAnimeNameSearchQuery(approximateName, searchFilter);
-        ArrayList<AnimeInfo> matchedAnimeList = jdbcHelper.queryAnime(query);
+        ArrayList<AnimeInfo> matchedAnimeList = jdbcHelper.queryAnime(query, false);
+
+        searchFilter.filterBySeason(matchedAnimeList); System.out.println(query);
+        return matchedAnimeList;
+    }
+
+    public ArrayList<AnimeInfo> searchAnimeByCharacter(String approximateName) {
+        String query = QueryBuilder.buildAnimeCharacterSearchQuery(approximateName, searchFilter);
+        ArrayList<AnimeInfo> matchedAnimeList = jdbcHelper.queryAnime(query, true);
 
         searchFilter.filterBySeason(matchedAnimeList);
         return matchedAnimeList;

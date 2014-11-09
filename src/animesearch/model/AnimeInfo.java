@@ -10,4 +10,7 @@ public class AnimeInfo {
     public String producer;
     public String releaseDate;
     public String description = "No description";
+
+    public String charaterName;
+    public String characterImagePath;
 }
