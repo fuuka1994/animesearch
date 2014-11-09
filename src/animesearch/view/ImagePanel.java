@@ -1,10 +1,9 @@
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.io.IOException;
+package animesearch.view;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
 
 public class ImagePanel extends JPanel {
 	private static final long serialVersionUID = 1L;

@@ -1,3 +1,4 @@
+package animesearch.view;
 
 public class ObjectToTest {
 	

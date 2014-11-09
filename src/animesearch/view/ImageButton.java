@@ -1,10 +1,10 @@
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+package animesearch.view;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class ImageButton extends JButton {
 	private static final long serialVersionUID = 1L;

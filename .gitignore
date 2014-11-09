@@ -2,6 +2,10 @@
 /out
 *.class
 
+# Image resources
+/src/animesearch/AnimeCover
+/src/animesearch/CharacterImage
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
