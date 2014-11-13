@@ -22,3 +22,8 @@
 hs_err_pid*
 
 .idea/workspace.xml
+AnimeSearch.iml
+.idea
+lib
+out
+src/animesearch/view/img
