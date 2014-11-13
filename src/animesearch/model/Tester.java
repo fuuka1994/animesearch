@@ -19,12 +19,10 @@ public class Tester {
 
         if (manager != null) {
             ArrayList<String> notGen = new ArrayList<String>();
-            //notGen.add("drama");
-            //notGen.add("school");
+            // notGen.add("action");
 
             ArrayList<String> andGen = new ArrayList<String>();
-            //andGen.add("magic");
-            //andGen.add("action");
+            // andGen.add("drama");
 
             try {
                 manager.connect("postgres", "123456");
@@ -35,16 +33,26 @@ public class Tester {
 
             SearchFilter filter = manager.getSearchFilter();
             filter.mustHave(andGen)
-                    .exclude(notGen)
-                    .startAt("Spring 1995")
+                    .startAt("Spring 1980")
                     .endAt("Summer 2014");
 
-            // ArrayList<AnimeInfo> animeList = manager.searchAnimeByName("layer");
-            ArrayList<AnimeInfo> animeList = manager.searchAnimeByCharacter("naruto");
-            for (AnimeInfo anime : animeList) {
-                System.out.println(anime.englishTitle);
-                System.out.println(anime.releaseDate + "\n");
-            }
+            /*
+            ** Testing query speed
+            */
+            System.out.println("Begin testing........");
+            long startTime = System.currentTimeMillis();
+
+            ArrayList<AnimeInfo> animeList = manager.searchAnimeByName("naruto");
+
+            long runTime = System.currentTimeMillis() - startTime;
+            System.out.println("Query returned with " + animeList.size() + " result(s) and " +
+                    " took " + runTime + " milliseconds to run.");
+
+//            ArrayList<AnimeInfo> animeList = manager.searchAnimeByCharacter("naruto");
+//            for (AnimeInfo anime : animeList) {
+//                System.out.println(anime.englishTitle);
+//                System.out.println(anime.releaseDate + "\n");
+//            }
 
             manager.disconnect();
         }

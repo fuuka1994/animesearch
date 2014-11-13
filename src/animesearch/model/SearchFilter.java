@@ -36,7 +36,7 @@ public class SearchFilter implements Serializable {
         return this;
     }
 
-    public String createSqlListFrom(ArrayList<String> genreList) {
+    private String createSqlListFrom(ArrayList<String> genreList) {
         String sqlList = "(";
         for (String genre : genreList) {
             if (genre != "other") {
@@ -71,8 +71,8 @@ public class SearchFilter implements Serializable {
     public void filterBySeason(ArrayList<AnimeInfo> animeList) {
         ArrayList<AnimeInfo> tempList = new ArrayList<AnimeInfo>(animeList);
         for (AnimeInfo anime : tempList) {
-            boolean isSeasonBefore = compareSeason(anime.season, this.seasonFrom) < 0;
-            boolean isSeasonAfter = compareSeason(anime.season, this.seasonTo) > 0;
+            boolean isSeasonBefore = compareSeason(anime.getSeason(), this.seasonFrom) < 0;
+            boolean isSeasonAfter = compareSeason(anime.getSeason(), this.seasonTo) > 0;
             if (isSeasonBefore || isSeasonAfter)
                 animeList.remove(anime);
         }

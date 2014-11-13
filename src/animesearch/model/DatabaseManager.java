@@ -25,19 +25,36 @@ public class DatabaseManager {
     }
 
     public ArrayList<AnimeInfo> searchAnimeByName(String approximateName) {
-        String query = QueryBuilder.buildAnimeNameSearchQuery(approximateName, searchFilter);
+        if (approximateName.equals("")) {
+            approximateName = null;
+        }
+
+        String query = QueryBuilder.buildSearchAnimeByNameQuery(approximateName, searchFilter);
         ArrayList<AnimeInfo> matchedAnimeList = jdbcHelper.queryAnime(query, false);
 
-        searchFilter.filterBySeason(matchedAnimeList); System.out.println(query);
+        updateAnimeList(matchedAnimeList);
         return matchedAnimeList;
     }
 
     public ArrayList<AnimeInfo> searchAnimeByCharacter(String approximateName) {
-        String query = QueryBuilder.buildAnimeCharacterSearchQuery(approximateName, searchFilter);
+        if (approximateName.equals("")) {
+            approximateName = null;
+        }
+
+        String query = QueryBuilder.buildSearchAnimeByCharacterQuery(approximateName, searchFilter);
         ArrayList<AnimeInfo> matchedAnimeList = jdbcHelper.queryAnime(query, true);
 
-        searchFilter.filterBySeason(matchedAnimeList);
+        updateAnimeList(matchedAnimeList);
         return matchedAnimeList;
+    }
+
+    private void updateAnimeList(ArrayList<AnimeInfo> animeList) {
+        searchFilter.filterBySeason(animeList);
+
+        for (AnimeInfo a : animeList) {
+            String query = QueryBuilder.buildSearchCharactersQuery(a.getEnglishTitle());
+            a.setCharacters(jdbcHelper.queryCharacters(query));
+        }
     }
 
     // Always use this method to obtain the app filter, don't manually instantiate a SearchFilter
@@ -47,5 +64,14 @@ public class DatabaseManager {
             searchFilter.addListOfGenre(jdbcHelper.getAvailableGenre());
         }
         return searchFilter;
+    }
+
+    public void addBookmark(String animeName) {
+
+    }
+
+    public ArrayList<AnimeInfo> getBookmarkedAnimes() {
+        ArrayList<AnimeInfo> bookmarkedAnime = new ArrayList<AnimeInfo>();
+        return bookmarkedAnime;
     }
 }

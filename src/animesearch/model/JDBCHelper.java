@@ -13,6 +13,8 @@ public class JDBCHelper {
 
     private static final String JDBC_DRIVER = "org.postgresql.Driver";
     private static final String DB_PATH = "jdbc:postgresql://localhost:5432/animedb";
+
+    private static final String ID_COLUMN = "id";
     private static final String ENGLISH_TITLE_COLUMN = "english_title";
     private static final String ROMAJI_TITLE_COLUMN = "romaji_title";
     private static final String SEASON_COLUMN = "season";
@@ -84,27 +86,27 @@ public class JDBCHelper {
         }
     }
 
-    public ArrayList<AnimeInfo> queryAnime(String query, boolean needCharacterInfo) {
+    public ArrayList<AnimeInfo> queryAnime(String query, boolean queryByCharater) {
         ArrayList<AnimeInfo> animeList = new ArrayList<AnimeInfo>();
         try {
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 AnimeInfo animeInfo = new AnimeInfo();
 
-                animeInfo.englishTitle = resultSet.getString(ENGLISH_TITLE_COLUMN);
-                animeInfo.romajiTitle = resultSet.getString(ROMAJI_TITLE_COLUMN);
-                animeInfo.season = resultSet.getString(SEASON_COLUMN);
-                animeInfo.producer = resultSet.getString(PRODUCER_COLUMN);
-                animeInfo.releaseDate = resultSet.getString(RELEASE_DATE_COLUMN);
+                animeInfo.setId(resultSet.getInt(ID_COLUMN));
+                animeInfo.setEnglishTitle(resultSet.getString(ENGLISH_TITLE_COLUMN));
+                animeInfo.setRomajiTitle(resultSet.getString(ROMAJI_TITLE_COLUMN));
+                animeInfo.setSeason(resultSet.getString(SEASON_COLUMN));
+                animeInfo.setProducer(resultSet.getString(PRODUCER_COLUMN));
+                animeInfo.setReleaseDate(resultSet.getString(RELEASE_DATE_COLUMN));
 
-                if (needCharacterInfo) {
-                    animeInfo.charaterName= resultSet.getString(CHARACTER_NAME_COLUMN);
-                    animeInfo.characterImagePath = resultSet.getString(CHARACTER_IMAGE_COLUMN);
+                if (queryByCharater) {
+                    animeInfo.matchedCharacterIs(resultSet.getString(CHARACTER_NAME_COLUMN));
                 }
 
                 String description = resultSet.getString(DESCRIPTION_COLUMN);
                 if (description != null) {
-                    animeInfo.description = description;
+                    animeInfo.setDescription(description);
                 }
                 animeList.add(animeInfo);
             }
@@ -114,5 +116,24 @@ public class JDBCHelper {
             e.printStackTrace();
         }
         return animeList;
+    }
+
+    public ArrayList<CharacterInfo> queryCharacters(String query) {
+        ArrayList<CharacterInfo> characters = new ArrayList<CharacterInfo>();
+        try {
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                CharacterInfo characterInfo = new CharacterInfo();
+
+                characterInfo.setName(resultSet.getString(CHARACTER_NAME_COLUMN));
+                characterInfo.setImagePath(resultSet.getString(CHARACTER_IMAGE_COLUMN));
+
+                characters.add(characterInfo);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return characters;
     }
 }
