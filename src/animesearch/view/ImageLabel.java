@@ -10,6 +10,10 @@ import java.io.IOException;
 public class ImageLabel extends JLabel {
 
 	private static final long serialVersionUID = 1L;
+
+	public ImageLabel() {
+		super();
+	}
 	
 	public ImageLabel(String image, int width, int height) {
 		super();

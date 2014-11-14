@@ -2,7 +2,7 @@ package animesearch.view;
 
 public class ObjectToTest {
 	
-	public static final String[] PROPERTY = {"Property 1","Property 2"};
+	public static final String[] PROPERTY = {"English title","Romaji title", "Season", "Producer", "Release date", "Description"};
 	
 	private String avatar;
 	private String name1;
