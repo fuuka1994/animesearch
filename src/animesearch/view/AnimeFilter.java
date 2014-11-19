@@ -111,84 +111,6 @@ public class AnimeFilter extends JDialog {
 		jpnSeason.add(jcbYearTo);
 		jcbYearTo.setEditable(true);
 		
-//		JPanel jpnGenre = new JPanel();
-//		jpnGenre.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Genre", TitledBorder.LEADING, TitledBorder.TOP, null, Color.GRAY));
-//		jpnGenre.setBounds(8, 35, 349, 178);
-//		contentPane.add(jpnGenre);
-//		jpnGenre.setLayout(null);
-		
-//		JCheckBox chckbxAction = new JCheckBox("Action");
-//		chckbxAction.setBounds(6, 16, 97, 23);
-//		jpnGenre.add(chckbxAction);
-//		
-//		JCheckBox chckbxAdventure = new JCheckBox("Adventure");
-//		chckbxAdventure.setBounds(6, 42, 97, 23);
-//		jpnGenre.add(chckbxAdventure);
-//		
-//		JCheckBox chckbxComedy = new JCheckBox("Comedy");
-//		chckbxComedy.setBounds(6, 68, 97, 23);
-//		jpnGenre.add(chckbxComedy);
-//		
-//		JCheckBox chckbxDrama = new JCheckBox("Drama");
-//		chckbxDrama.setBounds(6, 94, 97, 23);
-//		jpnGenre.add(chckbxDrama);
-//		
-//		JCheckBox chckbxEcchi = new JCheckBox("Ecchi");
-//		chckbxEcchi.setBounds(6, 120, 97, 23);
-//		jpnGenre.add(chckbxEcchi);
-//		
-//		JCheckBox chckbxFantasy = new JCheckBox("Fantasy");
-//		chckbxFantasy.setBounds(6, 148, 97, 23);
-//		jpnGenre.add(chckbxFantasy);
-//		
-//		JCheckBox chckbxHarem = new JCheckBox("Harem");
-//		chckbxHarem.setBounds(126, 16, 97, 23);
-//		jpnGenre.add(chckbxHarem);
-//		
-//		JCheckBox chckbxHorror = new JCheckBox("Horror");
-//		chckbxHorror.setBounds(126, 42, 97, 23);
-//		jpnGenre.add(chckbxHorror);
-//		
-//		JCheckBox chckbxMartialArts = new JCheckBox("Martial Arts");
-//		chckbxMartialArts.setBounds(126, 120, 97, 23);
-//		jpnGenre.add(chckbxMartialArts);
-//		
-//		JCheckBox chckbxMecha = new JCheckBox("Mecha");
-//		chckbxMecha.setBounds(126, 148, 97, 23);
-//		jpnGenre.add(chckbxMecha);
-//		
-//		JCheckBox chckbxMusic = new JCheckBox("Music");
-//		chckbxMusic.setBounds(246, 16, 97, 23);
-//		jpnGenre.add(chckbxMusic);
-//		
-//		JCheckBox chckbxMystery = new JCheckBox("Mystery");
-//		chckbxMystery.setBounds(246, 42, 97, 23);
-//		jpnGenre.add(chckbxMystery);
-//		
-//		JCheckBox chckbxMagicalGirl = new JCheckBox("Magical Girl");
-//		chckbxMagicalGirl.setBounds(126, 94, 97, 23);
-//		jpnGenre.add(chckbxMagicalGirl);
-//		
-//		JCheckBox chckbxRomance = new JCheckBox("Romance");
-//		chckbxRomance.setBounds(246, 68, 97, 23);
-//		jpnGenre.add(chckbxRomance);
-//		
-//		JCheckBox chckbxSliceOfLife = new JCheckBox("Slice of Life");
-//		chckbxSliceOfLife.setBounds(246, 94, 97, 23);
-//		jpnGenre.add(chckbxSliceOfLife);
-//		
-//		JCheckBox chckbxSports = new JCheckBox("Sports");
-//		chckbxSports.setBounds(246, 120, 97, 23);
-//		jpnGenre.add(chckbxSports);
-//		
-//		JCheckBox chckbxTragedy = new JCheckBox("Tragedy");
-//		chckbxTragedy.setBounds(246, 148, 97, 23);
-//		jpnGenre.add(chckbxTragedy);
-//		
-//		JCheckBox chckbxHistorical = new JCheckBox("Historical");
-//		chckbxHistorical.setBounds(126, 68, 97, 23);
-//		jpnGenre.add(chckbxHistorical);
-		
 		JPanel jpnGenre = new JPanel();
 		jpnGenre.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Genre", TitledBorder.LEADING, TitledBorder.TOP, null, Color.GRAY));
 		jpnGenre.setBounds(8, 35, 349, 178);
@@ -240,12 +162,12 @@ public class AnimeFilter extends JDialog {
 	
 	private void init(){
 		if (jcbYearFrom != null) {
-			for (int i = 1991; i < 2014; i++) {
+			for (int i = 1991; i <= 2014; i++) {
 				jcbYearFrom.addItem("" + i);
 			}
 		}
 		if (jcbYearTo != null) {
-			for (int i = 1991; i < 2014; i++) {
+			for (int i = 1991; i <= 2014; i++) {
 				jcbYearTo.addItem("" + i);
 			}
 		}
@@ -282,16 +204,4 @@ public class AnimeFilter extends JDialog {
 		}
 		return null;
 	}
-	
-//	public void addButtonsActionListener(ActionListener listener){
-//		for(int i =0; i<buttons.size(); i++){
-//			buttons.get(i).addActionListener(new ActionListener() {
-//				
-//				@Override
-//				public void actionPerformed(ActionEvent arg0) {
-//					buttons.get(i).changeState();
-//				}
-//			});
-//		}
-//	}
 }
