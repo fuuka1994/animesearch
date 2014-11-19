@@ -7,13 +7,14 @@ import java.util.ArrayList;
  * Class for easy management of app filter
  */
 public class SearchFilter implements Serializable {
+
     private ArrayList<String> allAvailableGenre;
     // The *GenreSQL is a string represents a list of genre in sql.
     // For example: ('comedy', 'horror')
     private String excludedGenreSQL;
     private String mustHaveGenreSQL;
-    private String seasonFrom;
-    private String seasonTo;
+    private String startSeason;
+    private String endSeason;
     private int nMustHaveGenre;
     private int nExcludedGenre;
 
@@ -59,23 +60,37 @@ public class SearchFilter implements Serializable {
     }
 
     public SearchFilter startAt(String seasonFrom) {
-        this.seasonFrom = seasonFrom;
+        this.startSeason = seasonFrom;
         return this;
     }
 
     public SearchFilter endAt(String seasonTo) {
-        this.seasonTo = seasonTo;
+        this.endSeason = seasonTo;
         return this;
     }
 
-    public void filterBySeason(ArrayList<AnimeInfo> animeList) {
+    void filterBySeason(ArrayList<AnimeInfo> animeList) {
         ArrayList<AnimeInfo> tempList = new ArrayList<AnimeInfo>(animeList);
         for (AnimeInfo anime : tempList) {
-            boolean isSeasonBefore = compareSeason(anime.getSeason(), this.seasonFrom) < 0;
-            boolean isSeasonAfter = compareSeason(anime.getSeason(), this.seasonTo) > 0;
+            boolean isSeasonBefore = false;
+            boolean isSeasonAfter = false;
+
+            if (startSeason == null)
+                isSeasonBefore = compareSeason(anime.getSeason(), this.startSeason) < 0;
+            if (endSeason == null)
+                isSeasonAfter = compareSeason(anime.getSeason(), this.endSeason) > 0;
+
             if (isSeasonBefore || isSeasonAfter)
                 animeList.remove(anime);
         }
+    }
+
+    boolean hasStartSeason() {
+        return startSeason != null;
+    }
+
+    boolean hasEndSeason() {
+        return endSeason != null;
     }
 
     /*
@@ -121,10 +136,10 @@ public class SearchFilter implements Serializable {
     }
 
     public String getStartSeason() {
-        return seasonFrom;
+        return startSeason;
     }
 
     public String getEndSeason() {
-        return seasonTo;
+        return endSeason;
     }
 }

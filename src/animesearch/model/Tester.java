@@ -19,10 +19,11 @@ public class Tester {
 
         if (manager != null) {
             ArrayList<String> notGen = new ArrayList<String>();
-            // notGen.add("action");
+            //notGen.add("action");
 
             ArrayList<String> andGen = new ArrayList<String>();
-            // andGen.add("drama");
+            //andGen.add("drama");
+            //andGen.add("school");
 
             try {
                 manager.connect("postgres", "123456");
@@ -33,7 +34,7 @@ public class Tester {
 
             SearchFilter filter = manager.getSearchFilter();
             filter.mustHave(andGen)
-                    .startAt("Spring 1980")
+                    .startAt("Fall 2004")
                     .endAt("Summer 2014");
 
             /*
@@ -42,16 +43,23 @@ public class Tester {
             System.out.println("Begin testing........");
             long startTime = System.currentTimeMillis();
 
-            ArrayList<AnimeInfo> animeList = manager.searchAnimeByName("naruto");
+             //ArrayList<AnimeInfo> animeList = manager.searchAnimeByName("");
+            ArrayList<AnimeInfo> animeList = manager.searchAnimeByCharacter("naruto");
 
             long runTime = System.currentTimeMillis() - startTime;
-            System.out.println("Query returned with " + animeList.size() + " result(s) and " +
+            System.out.println("Query anime returned with " + animeList.size() + " result(s) and " +
                     " took " + runTime + " milliseconds to run.");
 
-//            ArrayList<AnimeInfo> animeList = manager.searchAnimeByCharacter("naruto");
-//            for (AnimeInfo anime : animeList) {
-//                System.out.println(anime.englishTitle);
-//                System.out.println(anime.releaseDate + "\n");
+            for (AnimeInfo anime : animeList) {
+                System.out.println(anime.getEnglishTitle() + "\n" + anime.getReleaseDate() +
+                        "\n" + anime.getSeason());
+                anime.setCharacters(manager.getAnimeCharacters(anime.getId()));
+                System.out.println(anime.getMatchedCharacter().getName() + "\n");
+            }
+
+//            ArrayList<CharacterInfo> characterList = manager.getAnimeCharacters(1);
+//            for (CharacterInfo c : characterList) {
+//                System.out.println(c.getName());
 //            }
 
             manager.disconnect();

@@ -1,12 +1,10 @@
 package animesearch.model;
 
-/**
- * Created by kradr_000 on 12/11/2014.
- */
 public class CharacterInfo {
 
     private String name;
-    private String imagePath;
+    private int id;
+    private int animeId;
 
     public String getName() {
         return name;
@@ -16,11 +14,19 @@ public class CharacterInfo {
         this.name = name;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public int getId() {
+        return id;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getAnimeId() {
+        return animeId;
+    }
+
+    public void setAnimeId(int animeId) {
+        this.animeId = animeId;
     }
 }
