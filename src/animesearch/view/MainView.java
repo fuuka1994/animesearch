@@ -1,8 +1,13 @@
 package animesearch.view;
 
 import animesearch.model.AnimeInfo;
+import animesearch.view.ImageLabel;
+import animesearch.view.ImageButton;
+import animesearch.view.PatternPanel;
+import animesearch.view.Theme;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -261,7 +266,8 @@ public class MainView extends JFrame {
         animeInfo.setSeason("Summer 2012");
         animeInfo.setProducer("Aniplex");
         animeInfo.setReleaseDate("27/7/2012");
-        animeInfo.setDescription("My Teen Romantic Comedy SNAFU (やはり俺の青春ラブコメはまちがっている。 Yahari Ore no Seishun Rabu Kome wa Machigatteiru.?, lit. \"My youth romantic comedy is wrong as I expected.\"), also known in the short forms Hamachi (はまち?) and OreGairu (俺ガイル?),[2] is a Japanese light novel series written by Wataru Watari and illustrated by Ponkan8. There are four ongoing manga adaptations and two anthology volumes. It has been adapted into an anime television series, which aired between April 4 and June 27, 2013. A video game, titled Yahari Game demo Ore no Seishun Rabu Kome wa Machigatteiru. and published by 5pb., for the PlayStation Vita was released on September 19, 2013. A second season will begin airing in 2015.");
+        animeInfo.setDescription("");
+//        
         animeInfo.setId(1090);
         view.setInformation(animeInfo);
 
