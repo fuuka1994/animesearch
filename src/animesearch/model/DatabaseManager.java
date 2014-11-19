@@ -5,7 +5,7 @@ import animesearch.exception.DatabaseLoginFailedException;
 import java.util.ArrayList;
 
 /**
- * Provide API for accessing underlying app database.
+ * Provides API for accessing underlying app database.
  */
 public class DatabaseManager {
 
@@ -32,7 +32,7 @@ public class DatabaseManager {
         String query = QueryBuilder.buildSearchAnimeByNameQuery(approximateName, searchFilter);
         ArrayList<AnimeInfo> matchedAnimeList = jdbcHelper.queryAnime(query, false);
 
-        updateAnimeList(matchedAnimeList);
+        //updateAnimeList(matchedAnimeList);
         return matchedAnimeList;
     }
 
@@ -44,17 +44,28 @@ public class DatabaseManager {
         String query = QueryBuilder.buildSearchAnimeByCharacterQuery(approximateName, searchFilter);
         ArrayList<AnimeInfo> matchedAnimeList = jdbcHelper.queryAnime(query, true);
 
-        updateAnimeList(matchedAnimeList);
+        //updateAnimeList(matchedAnimeList);
         return matchedAnimeList;
+    }
+
+    public ArrayList<CharacterInfo> getAnimeCharacters(int animeId) {
+        String query = QueryBuilder.buildSearchCharactersQuery(animeId);
+        return jdbcHelper.queryCharacters(query);
     }
 
     private void updateAnimeList(ArrayList<AnimeInfo> animeList) {
         searchFilter.filterBySeason(animeList);
 
         for (AnimeInfo a : animeList) {
-            String query = QueryBuilder.buildSearchCharactersQuery(a.getEnglishTitle());
+            //String animeName = escapeSpecialCharacters(a.getEnglishTitle());
+            String query = QueryBuilder.buildSearchCharactersQuery(a.getId());
             a.setCharacters(jdbcHelper.queryCharacters(query));
         }
+    }
+
+    // Escape some characters in sql like '
+    private String escapeSpecialCharacters(String origin) {
+        return origin.replace("'", "''");
     }
 
     // Always use this method to obtain the app filter, don't manually instantiate a SearchFilter
@@ -66,7 +77,7 @@ public class DatabaseManager {
         return searchFilter;
     }
 
-    public void addBookmark(String animeName) {
+    public void addBookmark(int animeId) {
 
     }
 

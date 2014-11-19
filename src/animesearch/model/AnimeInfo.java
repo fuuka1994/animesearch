@@ -15,7 +15,7 @@ public class AnimeInfo {
     private String releaseDate;
     private String description;
 
-    private int matchedCharacterIndex;
+    private String matchedCharacter;
     private ArrayList<CharacterInfo> characters;
 
     public AnimeInfo() {
@@ -24,18 +24,19 @@ public class AnimeInfo {
     }
 
     void matchedCharacterIs(String characterName) {
-        for (CharacterInfo c : characters) {
-            if (c.getName().equals(characterName)) {
-                matchedCharacterIndex = characters.indexOf(c);
-            }
-        }
+        this.matchedCharacter = characterName;
     }
 
+    // Character to show as app's JTable
     public CharacterInfo getMatchedCharacter() {
-        return characters.get(matchedCharacterIndex);
+        for (CharacterInfo c : characters) {
+            if (c.getName().equals(matchedCharacter))
+                return c;
+        }
+        return null;
     }
 
-    public void setCharacters(ArrayList<CharacterInfo> characters) {
+    void setCharacters(ArrayList<CharacterInfo> characters) {
         this.characters = characters;
     }
 

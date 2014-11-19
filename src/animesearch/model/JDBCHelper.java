@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 /**
  * Provide wrapper for accessing under-laying database
+ * All methods are in package scope
  */
 public class JDBCHelper {
 
@@ -22,12 +23,12 @@ public class JDBCHelper {
     private static final String RELEASE_DATE_COLUMN = "release_date";
     private static final String DESCRIPTION_COLUMN = "description";
     private static final String CHARACTER_NAME_COLUMN = "name";
-    private static final String CHARACTER_IMAGE_COLUMN = "image_path";
+    private static final String CHARACTER_ANIME_ID_COLUMN = "anime_id";
 
     private Connection connection = null;
     private Statement statement = null;
 
-    public JDBCHelper() {
+    JDBCHelper() {
         try {
             Class.forName(JDBC_DRIVER);
         }
@@ -36,7 +37,7 @@ public class JDBCHelper {
         }
     }
 
-    public void connectDatabase(String username, String password) throws DatabaseLoginFailedException {
+    void connectDatabase(String username, String password) throws DatabaseLoginFailedException {
         try {
             connection = DriverManager.getConnection(DB_PATH, username, password);
         }
@@ -45,7 +46,7 @@ public class JDBCHelper {
         }
     }
 
-    public void closeDatabase() {
+    void closeDatabase() {
         try {
             if (statement != null)
                 statement.close();
@@ -57,7 +58,7 @@ public class JDBCHelper {
         }
     }
 
-    public ArrayList<String> getAvailableGenre() {
+    ArrayList<String> getAvailableGenre() {
         if (statement == null)
             initializeStatement();
 
@@ -86,7 +87,7 @@ public class JDBCHelper {
         }
     }
 
-    public ArrayList<AnimeInfo> queryAnime(String query, boolean queryByCharater) {
+    ArrayList<AnimeInfo> queryAnime(String query, boolean queryByCharater) {
         ArrayList<AnimeInfo> animeList = new ArrayList<AnimeInfo>();
         try {
             ResultSet resultSet = statement.executeQuery(query);
@@ -96,8 +97,8 @@ public class JDBCHelper {
                 animeInfo.setId(resultSet.getInt(ID_COLUMN));
                 animeInfo.setEnglishTitle(resultSet.getString(ENGLISH_TITLE_COLUMN));
                 animeInfo.setRomajiTitle(resultSet.getString(ROMAJI_TITLE_COLUMN));
-                animeInfo.setSeason(resultSet.getString(SEASON_COLUMN));
                 animeInfo.setProducer(resultSet.getString(PRODUCER_COLUMN));
+                animeInfo.setSeason(resultSet.getString(SEASON_COLUMN));
                 animeInfo.setReleaseDate(resultSet.getString(RELEASE_DATE_COLUMN));
 
                 if (queryByCharater) {
@@ -118,7 +119,7 @@ public class JDBCHelper {
         return animeList;
     }
 
-    public ArrayList<CharacterInfo> queryCharacters(String query) {
+    ArrayList<CharacterInfo> queryCharacters(String query) {
         ArrayList<CharacterInfo> characters = new ArrayList<CharacterInfo>();
         try {
             ResultSet resultSet = statement.executeQuery(query);
@@ -126,7 +127,8 @@ public class JDBCHelper {
                 CharacterInfo characterInfo = new CharacterInfo();
 
                 characterInfo.setName(resultSet.getString(CHARACTER_NAME_COLUMN));
-                characterInfo.setImagePath(resultSet.getString(CHARACTER_IMAGE_COLUMN));
+                characterInfo.setId(resultSet.getInt(ID_COLUMN));
+                characterInfo.setAnimeId(resultSet.getInt(CHARACTER_ANIME_ID_COLUMN));
 
                 characters.add(characterInfo);
             }
