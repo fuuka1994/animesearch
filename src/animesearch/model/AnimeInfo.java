@@ -36,7 +36,7 @@ public class AnimeInfo {
         return null;
     }
 
-    void setCharacters(ArrayList<CharacterInfo> characters) {
+    public void setCharacters(ArrayList<CharacterInfo> characters) {
         this.characters = characters;
     }
 
