@@ -18,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JButton;
 
 public class AnimeFilter extends JDialog {
 
@@ -28,13 +29,16 @@ public class AnimeFilter extends JDialog {
 	private JComboBox<String> jcbSeasonTo;
 	private JComboBox<String> jcbYearFrom;
 	private JComboBox<String> jcbYearTo;
+	private JCheckBox chckbxAllTime;
+	private JButton btnOk;
 	
 	private static final String[] GENRES = {"Action","Adventure","Comedy","Drama","Ecchi","Fantasy",
 		"Harem","Horror","Martial Arts","Mecha","Music","Mystery","Magical Girl","Romance","Slice of Life",
 		"Sports","Tragedy","Historical"};
 	private static final String[] DEMOGRAPHICS = {"Shoujo", "Shounen", "Seinen", "Kodomo"};
 	
-	private List<ThreeStateButton> buttons;
+	private List<ThreeStateButton> genreButtons;
+	private List<ThreeStateButton> demographicButtons;
 	/**
 	 * Launch the application.
 	 */
@@ -73,8 +77,15 @@ public class AnimeFilter extends JDialog {
 		lblSeason.setBounds(8, 224, 46, 14);
 		contentPane.add(lblSeason);
 		
-		JCheckBox chckbxAllTime = new JCheckBox("All time");
+		chckbxAllTime = new JCheckBox("All time");
 		chckbxAllTime.setBounds(60, 220, 97, 23);
+		chckbxAllTime.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				changeComboBoxMode();
+			}
+		});
 		contentPane.add(chckbxAllTime);
 		
 		JPanel jpnSeason = new JPanel();
@@ -117,7 +128,7 @@ public class AnimeFilter extends JDialog {
 		contentPane.add(jpnGenre);
 		jpnGenre.setLayout(new GridLayout(0, 3));
 		
-		buttons = new ArrayList<ThreeStateButton>();
+		genreButtons = new ArrayList<ThreeStateButton>();
 		
 		for (int i = 0; i < GENRES.length; i++) {
 			ThreeStateButton button = new ThreeStateButton();
@@ -128,46 +139,52 @@ public class AnimeFilter extends JDialog {
 					button.changeState();
 				}
 			});
-			buttons.add(button);
+			genreButtons.add(button);
 			JPanel smallPanel = new JPanel(new BorderLayout());
-			smallPanel.add(buttons.get(i), BorderLayout.WEST);
+			smallPanel.add(genreButtons.get(i), BorderLayout.WEST);
 			smallPanel.add(new JLabel(GENRES[i], JLabel.LEFT), BorderLayout.CENTER);
 			jpnGenre.add(smallPanel);
 		}
-		
+
 		JPanel jpnDemographic = new JPanel();
 		jpnDemographic.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Demographic", TitledBorder.LEADING, TitledBorder.TOP, null, Color.GRAY));
 		jpnDemographic.setBounds(368, 35, 109, 178);
 		contentPane.add(jpnDemographic);
-		jpnDemographic.setLayout(null);
+		jpnDemographic.setLayout(new GridLayout(0, 1));
 		
-		JCheckBox chckbxShoujo = new JCheckBox("Shoujo");
-		chckbxShoujo.setBounds(6, 68, 97, 23);
-		jpnDemographic.add(chckbxShoujo);
+		btnOk = new JButton("OK");
+		btnOk.setBounds(345, 280, 89, 23);
+		contentPane.add(btnOk);
 		
-		JCheckBox chckbxShounen = new JCheckBox("Shounen");
-		chckbxShounen.setBounds(6, 94, 97, 23);
-		jpnDemographic.add(chckbxShounen);
+		demographicButtons = new ArrayList<ThreeStateButton>();
 		
-		JCheckBox chckbxSeinen = new JCheckBox("Seinen");
-		chckbxSeinen.setBounds(6, 42, 97, 23);
-		jpnDemographic.add(chckbxSeinen);
-		
-		JCheckBox chckbxKodomo = new JCheckBox("Kodomo");
-		chckbxKodomo.setBounds(6, 16, 97, 23);
-		jpnDemographic.add(chckbxKodomo);
+		for (int i = 0; i < DEMOGRAPHICS.length; i++) {
+			ThreeStateButton button = new ThreeStateButton();
+			button.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					button.changeState();
+				}
+			});
+			demographicButtons.add(button);
+			JPanel smallPanel = new JPanel(new BorderLayout());
+			smallPanel.add(demographicButtons.get(i), BorderLayout.WEST);
+			smallPanel.add(new JLabel(DEMOGRAPHICS[i], JLabel.LEFT), BorderLayout.CENTER);
+			jpnDemographic.add(smallPanel);
+		}
 		
 		init();
 	}
 	
 	private void init(){
 		if (jcbYearFrom != null) {
-			for (int i = 1991; i <= 2014; i++) {
+			for (int i = 1991; i < 2014; i++) {
 				jcbYearFrom.addItem("" + i);
 			}
 		}
 		if (jcbYearTo != null) {
-			for (int i = 1991; i <= 2014; i++) {
+			for (int i = 1991; i < 2014; i++) {
 				jcbYearTo.addItem("" + i);
 			}
 		}
@@ -187,6 +204,13 @@ public class AnimeFilter extends JDialog {
 		}
 	}
 	
+	private void changeComboBoxMode(){
+		jcbSeasonFrom.setEnabled(!chckbxAllTime.isSelected());
+		jcbSeasonTo.setEnabled(!chckbxAllTime.isSelected());
+		jcbYearFrom.setEnabled(!chckbxAllTime.isSelected());
+		jcbYearTo.setEnabled(!chckbxAllTime.isSelected());
+	}
+	
 	public String getAnimeFrom(){
 		if ((jcbSeasonFrom != null) && (jcbYearFrom != null)) {
 			String season = (String) jcbSeasonFrom.getSelectedItem();
@@ -203,5 +227,29 @@ public class AnimeFilter extends JDialog {
 			return season + " " + year;
 		}
 		return null;
+	}
+	
+	public boolean isAllTimeSelected(){
+		return chckbxAllTime.isSelected();
+	}
+	
+	public void setBtnOKActionListener(ActionListener listener){
+		btnOk.addActionListener(listener);
+	}
+	
+	public List<Integer> getGenreValues(){
+		List<Integer> genreValues = new ArrayList<Integer>();
+		for (ThreeStateButton button : genreButtons) {
+			genreValues.add(button.getState());
+		}
+		return genreValues;
+	}
+	
+	public List<Integer> getDemographicValues(){
+		List<Integer> demographicValues = new ArrayList<Integer>();
+		for (ThreeStateButton button : demographicButtons) {
+			demographicValues.add(button.getState());
+		}
+		return demographicValues;
 	}
 }
