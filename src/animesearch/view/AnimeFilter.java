@@ -1,24 +1,13 @@
 package animesearch.view;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.GridLayout;
-
-import javax.swing.JDialog;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.border.TitledBorder;
-import javax.swing.UIManager;
-
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JButton;
 
 public class AnimeFilter extends JDialog {
 
@@ -131,7 +120,7 @@ public class AnimeFilter extends JDialog {
 		genreButtons = new ArrayList<ThreeStateButton>();
 		
 		for (int i = 0; i < GENRES.length; i++) {
-			ThreeStateButton button = new ThreeStateButton();
+			final ThreeStateButton button = new ThreeStateButton();
 			button.addActionListener(new ActionListener() {
 				
 				@Override
@@ -159,7 +148,7 @@ public class AnimeFilter extends JDialog {
 		demographicButtons = new ArrayList<ThreeStateButton>();
 		
 		for (int i = 0; i < DEMOGRAPHICS.length; i++) {
-			ThreeStateButton button = new ThreeStateButton();
+			final ThreeStateButton button = new ThreeStateButton();
 			button.addActionListener(new ActionListener() {
 				
 				@Override
