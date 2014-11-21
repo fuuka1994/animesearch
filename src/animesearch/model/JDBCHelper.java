@@ -10,7 +10,8 @@ import java.util.ArrayList;
  * Provide wrapper for accessing under-laying database
  * All methods are in package scope
  */
-public class JDBCHelper {
+public class JDBCHelper
+{
 
     private static final String JDBC_DRIVER = "org.postgresql.Driver";
     private static final String DB_PATH = "jdbc:postgresql://localhost:5432/animedb";
@@ -22,76 +23,91 @@ public class JDBCHelper {
     private static final String PRODUCER_COLUMN = "producer";
     private static final String RELEASE_DATE_COLUMN = "release_date";
     private static final String DESCRIPTION_COLUMN = "description";
+    private static final String NOTE_COLUMN = "note";
     private static final String CHARACTER_NAME_COLUMN = "name";
     private static final String CHARACTER_ANIME_ID_COLUMN = "anime_id";
 
     private Connection connection = null;
     private Statement statement = null;
 
-    JDBCHelper() {
-        try {
+    JDBCHelper()
+    {
+        try
+        {
             Class.forName(JDBC_DRIVER);
-        }
-        catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e)
+        {
             throw new JDBCDriverNotFoundException();
         }
     }
 
-    void connectDatabase(String username, String password) throws DatabaseLoginFailedException {
-        try {
+    void connectDatabase(String username, String password) throws DatabaseLoginFailedException
+    {
+        try
+        {
             connection = DriverManager.getConnection(DB_PATH, username, password);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new DatabaseLoginFailedException();
         }
     }
 
-    void closeDatabase() {
-        try {
+    void closeDatabase()
+    {
+        try
+        {
             if (statement != null)
                 statement.close();
             if (connection != null)
                 connection.close();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
     }
 
-    ArrayList<String> getAvailableGenre() {
+    ArrayList<String> getAvailableGenre()
+    {
         if (statement == null)
             initializeStatement();
 
         ArrayList<String> availableGenre = new ArrayList<String>();
-        try {
+        try
+        {
             String query = "SELECT DISTINCT tag FROM \"Genre\"";
             ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
+            while (resultSet.next())
+            {
                 availableGenre.add(resultSet.getString("tag"));
             }
             resultSet.close();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
 
         return availableGenre;
     }
 
-    private void initializeStatement() {
-        try {
+    private void initializeStatement()
+    {
+        try
+        {
             statement = connection.createStatement();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
     }
 
-    ArrayList<AnimeInfo> queryAnime(String query, boolean queryByCharater) {
+    ArrayList<AnimeInfo> queryAnime(String query, boolean queryByCharater)
+    {
         ArrayList<AnimeInfo> animeList = new ArrayList<AnimeInfo>();
-        try {
+        try
+        {
             ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
+            while (resultSet.next())
+            {
                 AnimeInfo animeInfo = new AnimeInfo();
 
                 animeInfo.setId(resultSet.getInt(ID_COLUMN));
@@ -101,29 +117,34 @@ public class JDBCHelper {
                 animeInfo.setSeason(resultSet.getString(SEASON_COLUMN));
                 animeInfo.setReleaseDate(resultSet.getString(RELEASE_DATE_COLUMN));
 
-                if (queryByCharater) {
+                if (queryByCharater)
+                {
                     animeInfo.matchedCharacterIs(resultSet.getString(CHARACTER_NAME_COLUMN));
                 }
 
                 String description = resultSet.getString(DESCRIPTION_COLUMN);
-                if (description != null) {
+                if (description != null)
+                {
                     animeInfo.setDescription(description);
                 }
                 animeList.add(animeInfo);
             }
             resultSet.close();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return animeList;
     }
 
-    ArrayList<CharacterInfo> queryCharacters(String query) {
+    ArrayList<CharacterInfo> queryCharacters(String query)
+    {
         ArrayList<CharacterInfo> characters = new ArrayList<CharacterInfo>();
-        try {
+        try
+        {
             ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
+            while (resultSet.next())
+            {
                 CharacterInfo characterInfo = new CharacterInfo();
 
                 characterInfo.setName(resultSet.getString(CHARACTER_NAME_COLUMN));
@@ -133,9 +154,69 @@ public class JDBCHelper {
                 characters.add(characterInfo);
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return characters;
+    }
+
+    void addBookmark(int animeId, String note)
+    {
+        if (note == null)
+            note = "";
+
+        String query = "insert into \"Bookmarks\" set anime_id=" + animeId
+                + ", note='" + note + "'";
+        try
+        {
+            statement.executeQuery(query);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    ArrayList<AnimeInfo> getBookmarkedAnime()
+    {
+        ArrayList<AnimeInfo> animeList = new ArrayList<AnimeInfo>();
+        String query = QueryBuilder.buildGetBookmarksQuery();
+        try
+        {
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next())
+            {
+                AnimeInfo animeInfo = new AnimeInfo();
+
+                animeInfo.setId(resultSet.getInt(ID_COLUMN));
+                animeInfo.setEnglishTitle(resultSet.getString(ENGLISH_TITLE_COLUMN));
+                animeInfo.setRomajiTitle(resultSet.getString(ROMAJI_TITLE_COLUMN));
+                animeInfo.setProducer(resultSet.getString(PRODUCER_COLUMN));
+                animeInfo.setSeason("");
+                animeInfo.setReleaseDate("");
+                animeInfo.setBookmarkNote(resultSet.getString(NOTE_COLUMN));
+                animeInfo.setDescription("");
+
+                animeList.add(animeInfo);
+            }
+            resultSet.close();
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return animeList;
+    }
+
+    void deleteBookmark(int animeId)
+    {
+        String sql = " delete from \"Bookmarks\" where anime_id=" + animeId;
+        try
+        {
+            statement.executeQuery(sql);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
