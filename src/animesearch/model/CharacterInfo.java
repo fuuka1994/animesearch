@@ -1,32 +1,38 @@
 package animesearch.model;
 
-public class CharacterInfo {
-
+public class CharacterInfo
+{
     private String name;
     private int id;
     private int animeId;
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
-    public int getId() {
+    public int getId()
+    {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(int id)
+    {
         this.id = id;
     }
 
-    public int getAnimeId() {
+    public int getAnimeId()
+    {
         return animeId;
     }
 
-    public void setAnimeId(int animeId) {
+    public void setAnimeId(int animeId)
+    {
         this.animeId = animeId;
     }
 }

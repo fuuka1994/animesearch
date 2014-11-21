@@ -7,9 +7,9 @@ import java.util.ArrayList;
 /**
  * Provides API for accessing underlying app database.
  */
+
 public class DatabaseManager
 {
-
     private SearchFilter searchFilter;
     private JDBCHelper jdbcHelper;
 
@@ -41,7 +41,6 @@ public class DatabaseManager
         String query = QueryBuilder.buildSearchAnimeByCharacterQuery(approximateName, searchFilter);
         ArrayList<AnimeInfo> matchedAnimeList = jdbcHelper.queryAnime(query, true);
 
-        //updateAnimeList(matchedAnimeList);
         return matchedAnimeList;
     }
 
@@ -49,24 +48,6 @@ public class DatabaseManager
     {
         String query = QueryBuilder.buildSearchCharactersQuery(animeId);
         return jdbcHelper.queryCharacters(query);
-    }
-
-    private void updateAnimeList(ArrayList<AnimeInfo> animeList)
-    {
-        searchFilter.filterBySeason(animeList);
-
-        for (AnimeInfo a : animeList)
-        {
-            //String animeName = escapeSpecialCharacters(a.getEnglishTitle());
-            String query = QueryBuilder.buildSearchCharactersQuery(a.getId());
-            a.setCharacters(jdbcHelper.queryCharacters(query));
-        }
-    }
-
-    // Escape some characters in sql like '
-    private String escapeSpecialCharacters(String origin)
-    {
-        return origin.replace("'", "''");
     }
 
     // Always use this method to obtain the app filter, don't manually instantiate a SearchFilter

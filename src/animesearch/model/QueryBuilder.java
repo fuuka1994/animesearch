@@ -5,12 +5,9 @@ package animesearch.model;
  */
 public class QueryBuilder
 {
-
     private static String[] seasonInYear = {"Spring", "Summer", "Fall", "Winter"};
 
-    private QueryBuilder()
-    {
-    }
+    private QueryBuilder() {}
 
     static String buildSearchAnimeByNameQuery(String approximateName, SearchFilter searchFilter)
     {
@@ -74,7 +71,6 @@ public class QueryBuilder
 
         }
 
-        //System.out.println(query);
         return query;
     }
 
@@ -89,7 +85,7 @@ public class QueryBuilder
             {
                 seasonFound = true;
             }
-            if (seasonFound == true)
+            if (seasonFound)
             {
                 seasonInStartYear += "'" + season + "',";
             }
@@ -122,25 +118,22 @@ public class QueryBuilder
     {
         String nameFilterQuery = buildSearchAnimeByNameQuery(null, searchFilter);
 
-        String query = " SELECT A.* , C.name \n" +
+        return  " SELECT A.* , C.name \n" +
                 " FROM \"Characters\" AS C, (" + nameFilterQuery + ") AS A \n" +
                 " WHERE C.anime_id = A.id  AND UPPER(name) " +
                 " LIKE UPPER('%" + approximateName + "%')";
-        return query;
     }
 
     static String buildSearchCharactersQuery(int animeId)
     {
-        String query = " SELECT c.* \n" +
+        return  " SELECT c.* \n" +
                 " FROM \"Characters\" AS C \n" +
                 " WHERE c.anime_id = " + animeId;
-
-        return query;
     }
 
     static String buildGetBookmarksQuery()
     {
-        return " select a.*, note " +
+        return  " select a.*, note " +
                 " from \"Anime_\" as a, \"Bookmarks\" as b " +
                 " where a.id = b.anime_id";
     }

@@ -12,7 +12,6 @@ import java.util.ArrayList;
  */
 public class JDBCHelper
 {
-
     private static final String JDBC_DRIVER = "org.postgresql.Driver";
     private static final String DB_PATH = "jdbc:postgresql://localhost:5432/animedb";
 
@@ -35,7 +34,8 @@ public class JDBCHelper
         try
         {
             Class.forName(JDBC_DRIVER);
-        } catch (ClassNotFoundException e)
+        }
+        catch (ClassNotFoundException e)
         {
             throw new JDBCDriverNotFoundException();
         }
@@ -46,7 +46,8 @@ public class JDBCHelper
         try
         {
             connection = DriverManager.getConnection(DB_PATH, username, password);
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             throw new DatabaseLoginFailedException();
         }
@@ -60,7 +61,8 @@ public class JDBCHelper
                 statement.close();
             if (connection != null)
                 connection.close();
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             e.printStackTrace();
         }
@@ -81,7 +83,8 @@ public class JDBCHelper
                 availableGenre.add(resultSet.getString("tag"));
             }
             resultSet.close();
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             e.printStackTrace();
         }
@@ -94,7 +97,8 @@ public class JDBCHelper
         try
         {
             statement = connection.createStatement();
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             e.printStackTrace();
         }
@@ -130,7 +134,8 @@ public class JDBCHelper
                 animeList.add(animeInfo);
             }
             resultSet.close();
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             e.printStackTrace();
         }
@@ -154,7 +159,8 @@ public class JDBCHelper
                 characters.add(characterInfo);
             }
 
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             e.printStackTrace();
         }
