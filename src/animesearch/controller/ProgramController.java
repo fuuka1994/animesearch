@@ -46,11 +46,11 @@ public class ProgramController {
 	private void addFilterButtonListener() {
 		// TODO Auto-generated method stub
 		mainView.addFilterButtonActionListerner(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 	}
@@ -62,14 +62,10 @@ public class ProgramController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if (mainView.getTextInSearchTextField().length() < 3) {
-					JOptionPane
-							.showMessageDialog(
-									mainView,
-									"In order to provide the best precise result, input search string must contain 3 or more characters");
+					JOptionPane.showMessageDialog(mainView, "In order to provide the best precise result, input search string must contain 3 or more characters");
 				} else {
 					String inputText = mainView.getTextInSearchTextField();
-					ArrayList<AnimeInfo> resultList = modelManager
-							.searchAnimeByCharacter(inputText);
+					ArrayList<AnimeInfo> resultList = modelManager.searchAnimeByCharacter(inputText);
 					mainView.setListOfResult(resultList);
 				}
 			}
@@ -78,8 +74,7 @@ public class ProgramController {
 
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel(UIManager
-					.getCrossPlatformLookAndFeelClassName());
+			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException e1) {
 			// TODO Auto-generated catch block

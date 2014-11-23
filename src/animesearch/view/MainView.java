@@ -21,8 +21,6 @@ public class MainView extends JFrame {
 	private static final String TITLE = "Anime Search";
 	private static final String BANNERURL = "img/banner.jpg";
 	private static final String SEARCH = "img/search.png";
-	private static final String TOGGLE1 = "img/toggle1.png";
-	private static final String TOGGLE2 = "img/toggle2.png";
 	private static final String LOVE1 = "img/love1.png";
 	private static final String LOVE2 = "img/love2.png";
 	private static final String ANIME_COVER_FOLDER = "AnimeCover/";
@@ -34,7 +32,7 @@ public class MainView extends JFrame {
 	private DefaultListModel<JPanel> resultListModel;
 	private PanelListCellRenderer resultRenderer;
 	private ImageLabel resultImage;
-	private ImageButton toggleButton;
+	private TwoStateButton toggleButton;
 	private ImageButton loveButton;
 	private JScrollPane informationPane;
 
@@ -67,23 +65,24 @@ public class MainView extends JFrame {
 		searchPanel.add(searchLabel);
 
 		searchTextField = new JTextField();
+		searchTextField.setToolTipText("Enter a part of anime/character name to search");
 		searchTextField.setBounds(110, 10, 440, 30);
 		searchPanel.add(searchTextField);
 
-		toggleButton = new ImageButton(TOGGLE1, TOGGLE2, 30, 30);
+		toggleButton = new TwoStateButton();
 		toggleButton.setBounds(560, 10, 30, 30);
 		searchPanel.add(toggleButton);
 
 		filterButton = new JButton("Filter");
 		filterButton.setBackground(Theme.getColor(1));
 		filterButton.setForeground(Theme.getColor(0));
-		filterButton.setBounds(600, 10, 190, 30);
+		filterButton.setBounds(790, 10, 190, 30);
 		searchPanel.add(filterButton);
 
 		bookmarkButton = new JButton("Bookmark manager");
 		bookmarkButton.setBackground(Theme.getColor(3));
 		bookmarkButton.setForeground(Theme.getColor(0));
-		bookmarkButton.setBounds(795, 10, 190, 30);
+		bookmarkButton.setBounds(995, 10, 190, 30);
 		searchPanel.add(bookmarkButton);
 
 		JPanel bottomPanel = new JPanel();
@@ -129,8 +128,7 @@ public class MainView extends JFrame {
 		resultPanel.setBackground(Theme.getColor(0));
 		resultPanel.setLayout(null);
 
-		ImageLabel avatarLabel = new ImageLabel(ANIME_COVER_FOLDER
-				+ Integer.toString(animeInfo.getId()) + ".jpg", 80, 80);
+		ImageLabel avatarLabel = new ImageLabel(ANIME_COVER_FOLDER + Integer.toString(animeInfo.getId()) + ".jpg", 80, 80);
 		avatarLabel.setBounds(10, 10, 80, 80);
 		resultPanel.add(avatarLabel);
 
@@ -159,8 +157,7 @@ public class MainView extends JFrame {
 		labelEngTitle.setBackground(Theme.getColor(4));
 		informationPanel.add(labelEngTitle);
 
-		JLabel labelEngTitleValue = new JLabel("<html>"
-				+ animeInfo.getEnglishTitle() + "</html>", JLabel.LEFT);
+		JLabel labelEngTitleValue = new JLabel("<html>" + animeInfo.getEnglishTitle() + "</html>", JLabel.LEFT);
 		labelEngTitleValue.setBounds(115, 0, 430, 30);
 		labelEngTitleValue.setForeground(Theme.getColor(4));
 		informationPanel.add(labelEngTitleValue);
@@ -171,8 +168,7 @@ public class MainView extends JFrame {
 		labelRomajiTitle.setBackground(Theme.getColor(4));
 		informationPanel.add(labelRomajiTitle);
 
-		JLabel labelRomajiTitleValue = new JLabel("<html>"
-				+ animeInfo.getRomajiTitle() + "</html>", JLabel.LEFT);
+		JLabel labelRomajiTitleValue = new JLabel("<html>" + animeInfo.getRomajiTitle() + "</html>", JLabel.LEFT);
 		labelRomajiTitleValue.setBounds(115, 20, 430, 30);
 		labelRomajiTitleValue.setForeground(Theme.getColor(4));
 		informationPanel.add(labelRomajiTitleValue);
@@ -192,8 +188,7 @@ public class MainView extends JFrame {
 		labelProducer.setForeground(Theme.getColor(3));
 		informationPanel.add(labelProducer);
 
-		JLabel labelProducerValue = new JLabel(animeInfo.getProducer(),
-				JLabel.LEFT);
+		JLabel labelProducerValue = new JLabel(animeInfo.getProducer(), JLabel.LEFT);
 		labelProducerValue.setBounds(115, 60, 430, 30);
 		labelProducerValue.setForeground(Theme.getColor(4));
 		informationPanel.add(labelProducerValue);
@@ -203,8 +198,7 @@ public class MainView extends JFrame {
 		labelReleaseDate.setForeground(Theme.getColor(3));
 		informationPanel.add(labelReleaseDate);
 
-		JLabel labelReleaseDateValue = new JLabel(animeInfo.getReleaseDate(),
-				JLabel.LEFT);
+		JLabel labelReleaseDateValue = new JLabel(animeInfo.getReleaseDate(), JLabel.LEFT);
 		labelReleaseDateValue.setBounds(115, 80, 430, 30);
 		labelReleaseDateValue.setForeground(Theme.getColor(4));
 		informationPanel.add(labelReleaseDateValue);
@@ -214,8 +208,7 @@ public class MainView extends JFrame {
 		labelDescription.setForeground(Theme.getColor(3));
 		informationPanel.add(labelDescription);
 
-		JTextArea textAreaDescriptionValue = new JTextArea(
-				animeInfo.getDescription());
+		JTextArea textAreaDescriptionValue = new JTextArea(animeInfo.getDescription());
 		textAreaDescriptionValue.setBackground(Theme.getColor(4));
 		textAreaDescriptionValue.setWrapStyleWord(true);
 		textAreaDescriptionValue.setLineWrap(true);
@@ -224,8 +217,7 @@ public class MainView extends JFrame {
 		paneDescription.setBounds(115, 110, 430, 170);
 		informationPanel.add(paneDescription);
 
-		resultImage
-				.changeImage(ANIME_COVER_FOLDER + animeInfo.getId() + ".jpg");
+		resultImage.changeImage(ANIME_COVER_FOLDER + animeInfo.getId() + ".jpg");
 
 		return informationPanel;
 	}
@@ -233,9 +225,7 @@ public class MainView extends JFrame {
 	class PanelListCellRenderer implements ListCellRenderer<JPanel> {
 
 		@Override
-		public Component getListCellRendererComponent(
-				JList<? extends JPanel> list, JPanel value, int index,
-				boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<? extends JPanel> list, JPanel value, int index, boolean isSelected, boolean cellHasFocus) {
 			if (value != null) {
 				if (isSelected) {
 					value.setBackground(Theme.getColor(2));
@@ -266,8 +256,8 @@ public class MainView extends JFrame {
 		return searchTextField.getText();
 	}
 
-	public void addToggleButtonActionListerner(ActionListener listener) {
-		toggleButton.addActionListener(listener);
+	public int getStateOfToggleButton() {
+		return toggleButton.getState();
 	}
 
 	public void addFilterButtonActionListerner(ActionListener listener) {
