@@ -1,6 +1,7 @@
 package animesearch.view;
 
 import animesearch.model.AnimeInfo;
+import animesearch.model.CharacterInfo;
 import animesearch.view.ImageLabel;
 import animesearch.view.ImageButton;
 import animesearch.view.PatternPanel;
@@ -10,8 +11,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 public class MainView extends JFrame {
@@ -24,6 +24,7 @@ public class MainView extends JFrame {
 	private static final String LOVE1 = "img/love1.png";
 	private static final String LOVE2 = "img/love2.png";
 	private static final String ANIME_COVER_FOLDER = "AnimeCover/";
+	private static final String CHARACTER_IMAGE_FOLDER = "CharacterImage/";
 
 	private JTextField searchTextField;
 	private JButton filterButton;
@@ -35,6 +36,9 @@ public class MainView extends JFrame {
 	private TwoStateButton toggleButton;
 	private ImageButton loveButton;
 	private JScrollPane informationPane;
+	private JList<JPanel> characterList;
+	private DefaultListModel<JPanel> characterListModel;
+	private PanelListCellRenderer characterRenderer;
 
 	public MainView() {
 		this.setResizable(false);
@@ -117,9 +121,20 @@ public class MainView extends JFrame {
 
 		informationPane = new JScrollPane();
 		informationPane.setBackground(Theme.getColor(4));
-		informationPane.setBounds(200, 10, 565, 300);
+		informationPane.setBounds(200, 10, 560, 300);
 		rightPanel.add(informationPane);
 
+		JScrollPane characterPane = new JScrollPane();
+		characterPane.setBounds(10, 330, 750, 170);
+		rightPanel.add(characterPane);
+
+		characterList = new JList<JPanel>();
+		characterListModel = new DefaultListModel<JPanel>();
+		characterList.setModel(characterListModel);
+		characterList.setLayoutOrientation(JList.VERTICAL_WRAP);
+		characterList.setBackground(Theme.getColor(3));
+//		characterList.setVisibleRowCount(-1);
+		characterPane.setViewportView(characterList);
 	}
 
 	private JPanel getResultPanel(AnimeInfo animeInfo) {
@@ -143,6 +158,24 @@ public class MainView extends JFrame {
 		resultPanel.add(name2Label);
 
 		return resultPanel;
+	}
+	
+	private JPanel getCharacterPanel(CharacterInfo characterInfo) {
+		JPanel characterPanel = new JPanel();
+		characterPanel.setPreferredSize(new Dimension(130, 150));
+		characterPanel.setBackground(Theme.getColor(0));
+		characterPanel.setLayout(null);
+
+		ImageLabel avatarLabel = new ImageLabel(CHARACTER_IMAGE_FOLDER + characterInfo.getId() + "_" + characterInfo.getAnimeId() + "_.jpg", 120, 120);
+		avatarLabel.setBounds(10, 10, 110, 110);
+		characterPanel.add(avatarLabel);
+
+		JLabel nameLabel = new JLabel(characterInfo.getName());
+		nameLabel.setBounds(10, 120, 110, 20);
+		nameLabel.setForeground(Theme.getColor(4));
+		characterPanel.add(nameLabel);
+
+		return characterPanel;
 	}
 
 	private JPanel getInformationPanel(AnimeInfo animeInfo) {
@@ -247,6 +280,15 @@ public class MainView extends JFrame {
 			resultListModel.addElement(getResultPanel(animeInfo));
 		}
 	}
+	
+	public void setListOfCharacter(AnimeInfo selectedAnime) {
+		characterListModel.clear();
+		characterRenderer = new PanelListCellRenderer();
+		characterList.setCellRenderer(characterRenderer);
+		for (CharacterInfo characterInfo : selectedAnime.getCharacters()) {
+			characterListModel.addElement(getCharacterPanel(characterInfo));
+		}
+	}
 
 	public void setInformation(AnimeInfo animeInfo) {
 		informationPane.setViewportView(getInformationPanel(animeInfo));
@@ -274,5 +316,17 @@ public class MainView extends JFrame {
 
 	public void addSearchTextFieldListener(ActionListener listener) {
 		searchTextField.addActionListener(listener);
+	}
+	
+	public void setResultListListener(MouseListener listener){
+		resultList.addMouseListener(listener);
+	}
+	
+	public int getSelectedAnimeIndex(){
+		return resultList.getSelectedIndex();
+	}
+	
+	public static void main(String[] args) {
+		new MainView().setVisible(true);
 	}
 }
