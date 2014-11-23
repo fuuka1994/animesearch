@@ -20,12 +20,14 @@ public class MainView extends JFrame {
 
 	private static final String TITLE = "Anime Search";
 	private static final String BANNERURL = "img/banner.jpg";
+	private static final String RANDOMANIME = "Anime you might want to watch:";
 	private static final String SEARCH = "img/search.png";
 	private static final String LOVE1 = "img/love1.png";
 	private static final String LOVE2 = "img/love2.png";
 	private static final String ANIME_COVER_FOLDER = "AnimeCover/";
 	private static final String CHARACTER_IMAGE_FOLDER = "CharacterImage/";
 
+	private JPanel randomPanel;
 	private JTextField searchTextField;
 	private JButton filterButton;
 	private JButton bookmarkButton;
@@ -54,9 +56,20 @@ public class MainView extends JFrame {
 		topPanel.setLayout(new BorderLayout());
 		this.getContentPane().add(topPanel, BorderLayout.NORTH);
 
-		ImageLabel bannerLabel = new ImageLabel(BANNERURL, 1000, 150);
-		bannerLabel.setPreferredSize(new Dimension(1000, 150));
-		topPanel.add(bannerLabel, BorderLayout.NORTH);
+		ImageLabel bannerLabel = new ImageLabel(BANNERURL, 800, 150);
+		bannerLabel.setPreferredSize(new Dimension(800, 150));
+		topPanel.add(bannerLabel, BorderLayout.WEST);
+		
+		randomPanel = new JPanel(new FlowLayout());
+		randomPanel.setBackground(Theme.getColor(1));
+		randomPanel.setPreferredSize(new Dimension(400, 150));
+		topPanel.add(randomPanel, BorderLayout.EAST);
+		
+		JLabel randomLabel = new JLabel(RANDOMANIME, JLabel.CENTER);
+		randomLabel.setFont(Theme.SMALLER_FONT);
+		randomLabel.setForeground(Theme.getColor(4));
+		randomLabel.setPreferredSize(new Dimension(380, 30));
+		randomPanel.add(randomLabel);
 
 		PatternPanel searchPanel = new PatternPanel(Theme.getPattern());
 		searchPanel.setPreferredSize(new Dimension(1000, 50));
@@ -136,7 +149,7 @@ public class MainView extends JFrame {
 //		characterList.setVisibleRowCount(-1);
 		characterPane.setViewportView(characterList);
 	}
-
+	
 	private JPanel getResultPanel(AnimeInfo animeInfo) {
 		JPanel resultPanel = new JPanel();
 		resultPanel.setPreferredSize(new Dimension(380, 100));
@@ -158,6 +171,10 @@ public class MainView extends JFrame {
 		resultPanel.add(name2Label);
 
 		return resultPanel;
+	}
+
+	public void setRandomAnime (AnimeInfo animeInfo){
+		randomPanel.add(getResultPanel(animeInfo));
 	}
 	
 	private JPanel getCharacterPanel(CharacterInfo characterInfo) {
