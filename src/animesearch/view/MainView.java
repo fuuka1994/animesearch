@@ -59,12 +59,12 @@ public class MainView extends JFrame {
 		ImageLabel bannerLabel = new ImageLabel(BANNERURL, 800, 150);
 		bannerLabel.setPreferredSize(new Dimension(800, 150));
 		topPanel.add(bannerLabel, BorderLayout.WEST);
-		
+
 		randomPanel = new JPanel(new FlowLayout());
 		randomPanel.setBackground(Theme.getColor(1));
 		randomPanel.setPreferredSize(new Dimension(400, 150));
 		topPanel.add(randomPanel, BorderLayout.EAST);
-		
+
 		JLabel randomLabel = new JLabel(RANDOMANIME, JLabel.CENTER);
 		randomLabel.setFont(Theme.SMALLER_FONT);
 		randomLabel.setForeground(Theme.getColor(4));
@@ -146,10 +146,10 @@ public class MainView extends JFrame {
 		characterList.setModel(characterListModel);
 		characterList.setLayoutOrientation(JList.VERTICAL_WRAP);
 		characterList.setBackground(Theme.getColor(3));
-//		characterList.setVisibleRowCount(-1);
+		characterList.setVisibleRowCount(-1);
 		characterPane.setViewportView(characterList);
 	}
-	
+
 	private JPanel getResultPanel(AnimeInfo animeInfo) {
 		JPanel resultPanel = new JPanel();
 		resultPanel.setPreferredSize(new Dimension(380, 100));
@@ -173,10 +173,10 @@ public class MainView extends JFrame {
 		return resultPanel;
 	}
 
-	public void setRandomAnime (AnimeInfo animeInfo){
+	public void setRandomAnime(AnimeInfo animeInfo) {
 		randomPanel.add(getResultPanel(animeInfo));
 	}
-	
+
 	private JPanel getCharacterPanel(CharacterInfo characterInfo) {
 		JPanel characterPanel = new JPanel();
 		characterPanel.setPreferredSize(new Dimension(130, 150));
@@ -187,7 +187,7 @@ public class MainView extends JFrame {
 		avatarLabel.setBounds(10, 10, 110, 110);
 		characterPanel.add(avatarLabel);
 
-		JLabel nameLabel = new JLabel(characterInfo.getName());
+		JLabel nameLabel = new JLabel(characterInfo.getName(), JLabel.CENTER);
 		nameLabel.setBounds(10, 120, 110, 20);
 		nameLabel.setForeground(Theme.getColor(4));
 		characterPanel.add(nameLabel);
@@ -262,6 +262,7 @@ public class MainView extends JFrame {
 		textAreaDescriptionValue.setBackground(Theme.getColor(4));
 		textAreaDescriptionValue.setWrapStyleWord(true);
 		textAreaDescriptionValue.setLineWrap(true);
+		textAreaDescriptionValue.setEditable(false);
 
 		JScrollPane paneDescription = new JScrollPane(textAreaDescriptionValue);
 		paneDescription.setBounds(115, 110, 430, 170);
@@ -297,7 +298,7 @@ public class MainView extends JFrame {
 			resultListModel.addElement(getResultPanel(animeInfo));
 		}
 	}
-	
+
 	public void setListOfCharacter(AnimeInfo selectedAnime) {
 		characterListModel.clear();
 		characterRenderer = new PanelListCellRenderer();
@@ -334,16 +335,12 @@ public class MainView extends JFrame {
 	public void addSearchTextFieldListener(ActionListener listener) {
 		searchTextField.addActionListener(listener);
 	}
-	
-	public void setResultListListener(MouseListener listener){
+
+	public void setResultListListener(MouseListener listener) {
 		resultList.addMouseListener(listener);
 	}
-	
-	public int getSelectedAnimeIndex(){
+
+	public int getSelectedAnimeIndex() {
 		return resultList.getSelectedIndex();
-	}
-	
-	public static void main(String[] args) {
-		new MainView().setVisible(true);
 	}
 }
