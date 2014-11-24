@@ -17,7 +17,7 @@ public class AnimeInfo
     private String description;
     private String bookmarkNote;
 
-    private String matchedCharacter;
+    private CharacterInfo matchedCharacter;
     private ArrayList<CharacterInfo> characters;
 
     public AnimeInfo()
@@ -26,20 +26,15 @@ public class AnimeInfo
         description = "No description";
     }
 
-    void matchedCharacterIs(String characterName)
+    void matchedCharacterIs(CharacterInfo c)
     {
-        this.matchedCharacter = characterName;
+        this.matchedCharacter = c;
     }
 
     // Character to show as app's JTable
     public CharacterInfo getMatchedCharacter()
     {
-        for (CharacterInfo c : characters)
-        {
-            if (c.getName().equals(matchedCharacter))
-                return c;
-        }
-        return null;
+        return matchedCharacter;
     }
 
     public void setCharacters(ArrayList<CharacterInfo> characters)
