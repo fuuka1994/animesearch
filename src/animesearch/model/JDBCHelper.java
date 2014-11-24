@@ -24,6 +24,7 @@ public class JDBCHelper
     private static final String DESCRIPTION_COLUMN = "description";
     private static final String NOTE_COLUMN = "note";
     private static final String CHARACTER_NAME_COLUMN = "name";
+    private static final String CHARACTER_ID_COLUMN = "char_id";
     private static final String CHARACTER_ANIME_ID_COLUMN = "anime_id";
 
     private Connection connection = null;
@@ -123,7 +124,11 @@ public class JDBCHelper
 
                 if (queryByCharater)
                 {
-                    animeInfo.matchedCharacterIs(resultSet.getString(CHARACTER_NAME_COLUMN));
+                    CharacterInfo c = new CharacterInfo();
+                    c.setName(resultSet.getString(CHARACTER_NAME_COLUMN));
+                    c.setId(resultSet.getInt(CHARACTER_ID_COLUMN));
+                    c.setAnimeId(resultSet.getInt(ID_COLUMN));
+                    animeInfo.matchedCharacterIs(c);
                 }
 
                 String description = resultSet.getString(DESCRIPTION_COLUMN);

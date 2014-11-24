@@ -118,10 +118,12 @@ public class QueryBuilder
     {
         String nameFilterQuery = buildSearchAnimeByNameQuery(null, searchFilter);
 
-        return  " SELECT A.* , C.name \n" +
+        String query =  " SELECT a.*, c.id as char_id, c.name \n" +
                 " FROM \"Characters\" AS C, (" + nameFilterQuery + ") AS A \n" +
                 " WHERE C.anime_id = A.id  AND UPPER(name) " +
                 " LIKE UPPER('%" + approximateName + "%')";
+
+        return query;
     }
 
     static String buildSearchCharactersQuery(int animeId)
