@@ -341,6 +341,10 @@ public class MainView extends JFrame {
 		return loveButton.getState();
 	}
 
+	public void setStateOfLoveButton(int state) {
+		loveButton.setState(state);
+	}
+
 	public void addFilterButtonActionListerner(ActionListener listener) {
 		filterButton.addActionListener(listener);
 	}

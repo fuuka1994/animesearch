@@ -58,6 +58,11 @@ public class TwoStateButtonBookmark extends JButton {
 		setIcon(icons.get(state));
 	}
 
+	public void setState(int state) {
+		this.state = state;
+		setIcon(icons.get(state));
+	}
+
 	public int getState() {
 		return state;
 	}
