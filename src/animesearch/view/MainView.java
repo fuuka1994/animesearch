@@ -36,7 +36,7 @@ public class MainView extends JFrame {
 	private PanelListCellRenderer resultRenderer;
 	private ImageLabel resultImage;
 	private TwoStateButton toggleButton;
-	private ImageButton loveButton;
+	private TwoStateButtonBookmark loveButton;
 	private JScrollPane informationPane;
 	private JList<JPanel> characterList;
 	private DefaultListModel<JPanel> characterListModel;
@@ -128,7 +128,7 @@ public class MainView extends JFrame {
 		resultImage.setBounds(10, 10, 170, 170);
 		rightPanel.add(resultImage);
 
-		loveButton = new ImageButton(LOVE1, LOVE2, 50, 50);
+		loveButton = new TwoStateButtonBookmark();
 		loveButton.setBounds(65, 200, 50, 50);
 		rightPanel.add(loveButton);
 
@@ -335,6 +335,10 @@ public class MainView extends JFrame {
 
 	public int getStateOfToggleButton() {
 		return toggleButton.getState();
+	}
+
+	public int getStateOfLoveButton() {
+		return loveButton.getState();
 	}
 
 	public void addFilterButtonActionListerner(ActionListener listener) {
