@@ -34,7 +34,7 @@ public class AnimeFilter extends JDialog {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AnimeFilter frame = new AnimeFilter();
+					final AnimeFilter frame = new AnimeFilter();
 					frame.setBtnOKActionListener(new ActionListener() {
 
 						@Override
