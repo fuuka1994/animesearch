@@ -156,19 +156,36 @@ public class MainView extends JFrame {
 		resultPanel.setBackground(Theme.getColor(0));
 		resultPanel.setLayout(null);
 
-		ImageLabel avatarLabel = new ImageLabel(ANIME_COVER_FOLDER + Integer.toString(animeInfo.getId()) + ".jpg", 80, 80);
-		avatarLabel.setBounds(10, 10, 80, 80);
-		resultPanel.add(avatarLabel);
+		if (animeInfo.getMatchedCharacter() == null) {
+			ImageLabel avatarLabel = new ImageLabel(ANIME_COVER_FOLDER + Integer.toString(animeInfo.getId()) + ".jpg", 80, 80);
+			avatarLabel.setBounds(10, 10, 80, 80);
+			resultPanel.add(avatarLabel);
 
-		JLabel name1Label = new JLabel(animeInfo.getEnglishTitle());
-		name1Label.setBounds(120, 10, 250, 35);
-		name1Label.setForeground(Theme.getColor(4));
-		resultPanel.add(name1Label);
+			JLabel name1Label = new JLabel(animeInfo.getEnglishTitle());
+			name1Label.setBounds(120, 10, 250, 35);
+			name1Label.setForeground(Theme.getColor(4));
+			resultPanel.add(name1Label);
 
-		JLabel name2Label = new JLabel(animeInfo.getRomajiTitle());
-		name2Label.setBounds(120, 55, 250, 35);
-		name2Label.setForeground(Theme.getColor(4));
-		resultPanel.add(name2Label);
+			JLabel name2Label = new JLabel(animeInfo.getRomajiTitle());
+			name2Label.setBounds(120, 55, 250, 35);
+			name2Label.setForeground(Theme.getColor(4));
+			resultPanel.add(name2Label);
+
+		} else {
+			ImageLabel avatarLabel = new ImageLabel(CHARACTER_IMAGE_FOLDER + animeInfo.getMatchedCharacter().getId() + "_" + animeInfo.getId() + "_" + ".jpg", 80, 80);
+			avatarLabel.setBounds(10, 10, 80, 80);
+			resultPanel.add(avatarLabel);
+
+			JLabel name1Label = new JLabel(animeInfo.getMatchedCharacter().getName());
+			name1Label.setBounds(120, 10, 250, 35);
+			name1Label.setForeground(Theme.getColor(4));
+			resultPanel.add(name1Label);
+
+			JLabel name2Label = new JLabel("<html><div><p style='color:red'>In anime:</p>" + animeInfo.getEnglishTitle() + "</div></html>");
+			name2Label.setBounds(120, 55, 250, 35);
+			name2Label.setForeground(Theme.getColor(4));
+			resultPanel.add(name2Label);
+		}
 
 		return resultPanel;
 	}
