@@ -2,11 +2,14 @@ package animesearch.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import com.sun.org.apache.bcel.internal.generic.ANEWARRAY;
 
 import animesearch.exception.DatabaseLoginFailedException;
 import animesearch.model.AnimeInfo;
@@ -14,16 +17,19 @@ import animesearch.model.DatabaseManager;
 import animesearch.model.SearchFilter;
 import animesearch.view.AnimeFilter;
 import animesearch.view.MainView;
+import animesearch.view.TwoStateButton;
 
 public class ProgramController {
 	private DatabaseManager modelManager;
 	private MainView mainView;
 	private static AnimeFilter animeFilterView = null;
+	private ArrayList<AnimeInfo> arrayResultSearch;
 
 	public ProgramController() throws DatabaseLoginFailedException {
 		// Instantiate properties
 		modelManager = new DatabaseManager();
-		modelManager.connect("minhnh", null); // Change this depend on servers
+		modelManager.connect("postgres", "123456789"); // Change this depend on
+														// servers
 		modelManager.getSearchFilter();
 
 		if (animeFilterView == null) {
@@ -35,12 +41,50 @@ public class ProgramController {
 		mainView.setVisible(true);
 
 		// Implementation
-		addListenerForAllElementsInView();
-	}
-
-	private void addListenerForAllElementsInView() {
 		addTextFieldListener();
 		addFilterButtonListener();
+		showInfo();
+	}
+
+	private void showInfo() {
+		// TODO Auto-generated method stub
+		mainView.setResultListListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				// Action goes here
+				AnimeInfo animeInfo = arrayResultSearch.get(mainView.getSelectedAnimeIndex());
+				mainView.setInformation(animeInfo);
+				animeInfo.setCharacters(modelManager.getAnimeCharacters(animeInfo.getId()));
+				mainView.setListOfCharacter(animeInfo);
+			}
+		});
+
 	}
 
 	private void addFilterButtonListener() {
@@ -64,9 +108,15 @@ public class ProgramController {
 				if (mainView.getTextInSearchTextField().length() < 3) {
 					JOptionPane.showMessageDialog(mainView, "In order to provide the best precise result, input search string must contain 3 or more characters");
 				} else {
-					String inputText = mainView.getTextInSearchTextField();
-					ArrayList<AnimeInfo> resultList = modelManager.searchAnimeByCharacter(inputText);
-					mainView.setListOfResult(resultList);
+					if(mainView.getStateOfToggleButton() == TwoStateButton.ANIME_MODE ){
+						String text = mainView.getTextInSearchTextField();
+						arrayResultSearch = modelManager.searchAnimeByName(text);
+						mainView.setListOfResult(arrayResultSearch);
+					}else{
+						String text = mainView.getTextInSearchTextField();
+						arrayResultSearch = modelManager.searchAnimeByCharacter(text);
+						mainView.setListOfResult(arrayResultSearch);
+					}
 				}
 			}
 		});
