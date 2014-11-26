@@ -1,23 +1,22 @@
 package animesearch.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
-import com.sun.org.apache.bcel.internal.generic.ANEWARRAY;
-
 import animesearch.exception.DatabaseLoginFailedException;
 import animesearch.model.AnimeInfo;
 import animesearch.model.DatabaseManager;
-import animesearch.model.SearchFilter;
 import animesearch.view.AnimeFilter;
+import animesearch.view.DatabaseLoginDialog;
 import animesearch.view.MainView;
 import animesearch.view.TwoStateButton;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 public class ProgramController {
 	private DatabaseManager modelManager;
@@ -25,12 +24,11 @@ public class ProgramController {
 	private static AnimeFilter animeFilterView = null;
 	private ArrayList<AnimeInfo> arrayResultSearch;
 
-	public ProgramController() throws DatabaseLoginFailedException {
+	private static DatabaseLoginDialog loginDialog = null;
+	private static int numberOfLogin = 0;
+
+	public ProgramController() {
 		// Instantiate properties
-		modelManager = new DatabaseManager();
-		modelManager.connect("postgres", "123456789"); // Change this depend on
-														// servers
-		modelManager.getSearchFilter();
 
 		if (animeFilterView == null) {
 			animeFilterView = new AnimeFilter();
@@ -38,6 +36,26 @@ public class ProgramController {
 		}
 
 		mainView = new MainView();
+		modelManager = new DatabaseManager();
+
+		// Instantiate mainView before this code block, because we will need
+		// it in the askUserForAuthentication() method
+		try {
+			FileInputStream fileStream = new FileInputStream("LoginInfo.ser");
+			ObjectInputStream os = new ObjectInputStream(fileStream);
+			String username = (String) os.readObject();
+			String password = (String) os.readObject();
+			if (password.equals(""))
+				password = null;
+			modelManager.connect(username, password);
+			os.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			askUserForAuthentication();
+		}
+
+		modelManager.getSearchFilter();
 		mainView.setVisible(true);
 
 		// Implementation
@@ -46,36 +64,86 @@ public class ProgramController {
 		showInfo();
 	}
 
+	private void askUserForAuthentication() {
+		numberOfLogin++;
+
+		if (loginDialog == null) {
+			loginDialog = new DatabaseLoginDialog(mainView);
+			loginDialog.setConnectButtonListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String username = loginDialog.getUsername();
+					String password = loginDialog.getPassword();
+
+					try	{
+						modelManager.connect(username, password);
+						FileOutputStream fileStream = new FileOutputStream("LoginInfo.ser");
+						ObjectOutputStream os = new ObjectOutputStream(fileStream);
+						os.writeObject(username);
+						os.writeObject(password);
+						os.close();
+						loginDialog.dispose();
+					}
+					catch (DatabaseLoginFailedException e1)	{
+						// Allow retry up to 3 times
+						if (getNumberOfLogin() > 3)
+							loginDialog.dispose();
+						else
+							askUserForAuthentication();
+					}
+					catch (Exception e2) {
+						e2.printStackTrace();
+					}
+				}
+			});
+			loginDialog.setVisible(true);
+		}
+		else {
+			loginDialog.setMessage("Please retry!");
+			loginDialog.clearInput();
+		}
+	}
+
+	private int getNumberOfLogin() {
+		return numberOfLogin;
+	}
+
 	private void showInfo() {
 		// TODO Auto-generated method stub
-		mainView.setResultListListener(new MouseListener() {
+		mainView.setResultListListener(new MouseListener()
+		{
 
 			@Override
-			public void mouseReleased(java.awt.event.MouseEvent e) {
+			public void mouseReleased(java.awt.event.MouseEvent e)
+			{
 				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			public void mousePressed(java.awt.event.MouseEvent e) {
+			public void mousePressed(java.awt.event.MouseEvent e)
+			{
 				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			public void mouseExited(java.awt.event.MouseEvent e) {
+			public void mouseExited(java.awt.event.MouseEvent e)
+			{
 				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			public void mouseEntered(java.awt.event.MouseEvent e) {
+			public void mouseEntered(java.awt.event.MouseEvent e)
+			{
 				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			public void mouseClicked(java.awt.event.MouseEvent e) {
+			public void mouseClicked(java.awt.event.MouseEvent e)
+			{
 				// TODO Auto-generated method stub
 				// Action goes here
 				AnimeInfo animeInfo = arrayResultSearch.get(mainView.getSelectedAnimeIndex());
@@ -130,11 +198,7 @@ public class ProgramController {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		try {
-			ProgramController programController = new ProgramController();
-		} catch (DatabaseLoginFailedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		ProgramController programController = new ProgramController();
 	}
 }
