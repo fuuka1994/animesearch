@@ -4,11 +4,13 @@ import animesearch.exception.DatabaseLoginFailedException;
 import animesearch.model.AnimeInfo;
 import animesearch.model.DatabaseManager;
 import animesearch.view.AnimeFilter;
+import animesearch.view.BookmarkView;
 import animesearch.view.DatabaseLoginDialog;
 import animesearch.view.MainView;
 import animesearch.view.TwoStateButton;
 
 import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -23,6 +25,7 @@ public class ProgramController {
 	private MainView mainView;
 	private static AnimeFilter animeFilterView = null;
 	private ArrayList<AnimeInfo> arrayResultSearch;
+	private static BookmarkView bookmarkView = null;
 
 	private static DatabaseLoginDialog loginDialog = null;
 	private static int numberOfLogin = 0;
@@ -33,6 +36,11 @@ public class ProgramController {
 		if (animeFilterView == null) {
 			animeFilterView = new AnimeFilter();
 			animeFilterView.setVisible(false);
+		}
+
+		if (bookmarkView == null) {
+			bookmarkView = new BookmarkView();
+			bookmarkView.setVisible(false);
 		}
 
 		mainView = new MainView();
@@ -49,8 +57,7 @@ public class ProgramController {
 				password = null;
 			modelManager.connect(username, password);
 			os.close();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			askUserForAuthentication();
 		}
@@ -75,7 +82,7 @@ public class ProgramController {
 					String username = loginDialog.getUsername();
 					String password = loginDialog.getPassword();
 
-					try	{
+					try {
 						modelManager.connect(username, password);
 						FileOutputStream fileStream = new FileOutputStream("LoginInfo.ser");
 						ObjectOutputStream os = new ObjectOutputStream(fileStream);
@@ -83,22 +90,19 @@ public class ProgramController {
 						os.writeObject(password);
 						os.close();
 						loginDialog.dispose();
-					}
-					catch (DatabaseLoginFailedException e1)	{
+					} catch (DatabaseLoginFailedException e1) {
 						// Allow retry up to 3 times
 						if (getNumberOfLogin() > 3)
 							loginDialog.dispose();
 						else
 							askUserForAuthentication();
-					}
-					catch (Exception e2) {
+					} catch (Exception e2) {
 						e2.printStackTrace();
 					}
 				}
 			});
 			loginDialog.setVisible(true);
-		}
-		else {
+		} else {
 			loginDialog.setMessage("Please retry!");
 			loginDialog.clearInput();
 		}
@@ -110,40 +114,34 @@ public class ProgramController {
 
 	private void showInfo() {
 		// TODO Auto-generated method stub
-		mainView.setResultListListener(new MouseListener()
-		{
+		mainView.setResultListListener(new MouseListener() {
 
 			@Override
-			public void mouseReleased(java.awt.event.MouseEvent e)
-			{
+			public void mouseReleased(java.awt.event.MouseEvent e) {
 				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			public void mousePressed(java.awt.event.MouseEvent e)
-			{
+			public void mousePressed(java.awt.event.MouseEvent e) {
 				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			public void mouseExited(java.awt.event.MouseEvent e)
-			{
+			public void mouseExited(java.awt.event.MouseEvent e) {
 				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			public void mouseEntered(java.awt.event.MouseEvent e)
-			{
+			public void mouseEntered(java.awt.event.MouseEvent e) {
 				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			public void mouseClicked(java.awt.event.MouseEvent e)
-			{
+			public void mouseClicked(java.awt.event.MouseEvent e) {
 				// TODO Auto-generated method stub
 				// Action goes here
 				AnimeInfo animeInfo = arrayResultSearch.get(mainView.getSelectedAnimeIndex());
@@ -176,11 +174,11 @@ public class ProgramController {
 				if (mainView.getTextInSearchTextField().length() < 3) {
 					JOptionPane.showMessageDialog(mainView, "In order to provide the best precise result, input search string must contain 3 or more characters");
 				} else {
-					if(mainView.getStateOfToggleButton() == TwoStateButton.ANIME_MODE ){
+					if (mainView.getStateOfToggleButton() == TwoStateButton.ANIME_MODE) {
 						String text = mainView.getTextInSearchTextField();
 						arrayResultSearch = modelManager.searchAnimeByName(text);
 						mainView.setListOfResult(arrayResultSearch);
-					}else{
+					} else {
 						String text = mainView.getTextInSearchTextField();
 						arrayResultSearch = modelManager.searchAnimeByCharacter(text);
 						mainView.setListOfResult(arrayResultSearch);
@@ -202,3 +200,401 @@ public class ProgramController {
 		ProgramController programController = new ProgramController();
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Hieu's part starts from here
