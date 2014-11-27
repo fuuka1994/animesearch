@@ -29,6 +29,8 @@ public class JDBCHelper
 
     private Connection connection = null;
     private Statement statement = null;
+    private String lastQuery;
+    private long queryRuntime;
 
     JDBCHelper()
     {
@@ -74,7 +76,7 @@ public class JDBCHelper
         if (statement == null)
             initializeStatement();
 
-        ArrayList<String> availableGenre = new ArrayList<String>();
+        ArrayList<String> availableGenre = new ArrayList<>();
         try
         {
             String query = "SELECT DISTINCT tag FROM \"Genre\"";
@@ -107,10 +109,13 @@ public class JDBCHelper
 
     ArrayList<AnimeInfo> queryAnime(String query, boolean queryByCharater)
     {
-        ArrayList<AnimeInfo> animeList = new ArrayList<AnimeInfo>();
+        ArrayList<AnimeInfo> animeList = new ArrayList<>();
         try
         {
+            lastQuery = query;
+            startTimeCounter();
             ResultSet resultSet = statement.executeQuery(query);
+            stopTimeCounter();
             while (resultSet.next())
             {
                 AnimeInfo animeInfo = new AnimeInfo();
@@ -132,7 +137,8 @@ public class JDBCHelper
                 }
 
                 String description = resultSet.getString(DESCRIPTION_COLUMN);
-                if (description != null)
+                // Simple trick to check whether an anime has description or not
+                if (description.length() < 5)
                 {
                     animeInfo.setDescription(description);
                 }
@@ -147,12 +153,25 @@ public class JDBCHelper
         return animeList;
     }
 
+    private void startTimeCounter()
+    {
+        queryRuntime = System.currentTimeMillis();
+    }
+
+    private void stopTimeCounter()
+    {
+        queryRuntime = System.currentTimeMillis() - queryRuntime;
+    }
+
     ArrayList<CharacterInfo> queryCharacters(String query)
     {
-        ArrayList<CharacterInfo> characters = new ArrayList<CharacterInfo>();
+        ArrayList<CharacterInfo> characters = new ArrayList<>();
         try
         {
+            lastQuery = query;
+            startTimeCounter();
             ResultSet resultSet = statement.executeQuery(query);
+            stopTimeCounter();
             while (resultSet.next())
             {
                 CharacterInfo characterInfo = new CharacterInfo();
@@ -190,7 +209,7 @@ public class JDBCHelper
 
     ArrayList<AnimeInfo> getBookmarkedAnime()
     {
-        ArrayList<AnimeInfo> animeList = new ArrayList<AnimeInfo>();
+        ArrayList<AnimeInfo> animeList = new ArrayList<>();
         String query = QueryBuilder.buildGetBookmarksQuery();
         try
         {
@@ -229,5 +248,15 @@ public class JDBCHelper
         {
             e.printStackTrace();
         }
+    }
+
+    String getLastQuery()
+    {
+        return lastQuery;
+    }
+
+    long getLastQueryRuntime()
+    {
+        return queryRuntime;
     }
 }

@@ -31,17 +31,13 @@ public class DatabaseManager
     public ArrayList<AnimeInfo> searchAnimeByName(String approximateName)
     {
         String query = QueryBuilder.buildSearchAnimeByNameQuery(approximateName, searchFilter);
-        ArrayList<AnimeInfo> matchedAnimeList = jdbcHelper.queryAnime(query, false);
-
-        return matchedAnimeList;
+        return jdbcHelper.queryAnime(query, false);
     }
 
     public ArrayList<AnimeInfo> searchAnimeByCharacter(String approximateName)
     {
         String query = QueryBuilder.buildSearchAnimeByCharacterQuery(approximateName, searchFilter);
-        ArrayList<AnimeInfo> matchedAnimeList = jdbcHelper.queryAnime(query, true);
-
-        return matchedAnimeList;
+        return jdbcHelper.queryAnime(query, true);
     }
 
     public ArrayList<CharacterInfo> getAnimeCharacters(int animeId)
@@ -73,5 +69,15 @@ public class DatabaseManager
 
     public void deleteBookmark(int animeId) {
         jdbcHelper.deleteBookmark(animeId);
+    }
+
+    public String getLastQuery()
+    {
+        return jdbcHelper.getLastQuery();
+    }
+
+    public long getLastQueryRuntime()
+    {
+        return jdbcHelper.getLastQueryRuntime();
     }
 }
