@@ -15,6 +15,7 @@ public class AnimeInfo
     private String producer;
     private String releaseDate;
     private String description;
+    private String genre;
     private String bookmarkNote;
 
     private CharacterInfo matchedCharacter;
@@ -125,5 +126,15 @@ public class AnimeInfo
     public void setBookmarkNote(String bookmarkNote)
     {
         this.bookmarkNote = bookmarkNote;
+    }
+
+    public String getGenre()
+    {
+        return genre;
+    }
+
+    public void setGenre(String genre)
+    {
+        this.genre = genre;
     }
 }

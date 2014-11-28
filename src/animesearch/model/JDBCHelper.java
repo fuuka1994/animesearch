@@ -14,7 +14,6 @@ public class JDBCHelper
 {
     private static final String JDBC_DRIVER = "org.postgresql.Driver";
     private static final String DB_PATH = "jdbc:postgresql://localhost:5432/animedb";
-
     private static final String ID_COLUMN = "id";
     private static final String ENGLISH_TITLE_COLUMN = "english_title";
     private static final String ROMAJI_TITLE_COLUMN = "romaji_title";
@@ -22,6 +21,7 @@ public class JDBCHelper
     private static final String PRODUCER_COLUMN = "producer";
     private static final String RELEASE_DATE_COLUMN = "release_date";
     private static final String DESCRIPTION_COLUMN = "description";
+    private static final String GENRE_COLUMN = "genre";
     private static final String NOTE_COLUMN = "note";
     private static final String CHARACTER_NAME_COLUMN = "name";
     private static final String CHARACTER_ID_COLUMN = "char_id";
@@ -124,7 +124,6 @@ public class JDBCHelper
                 animeInfo.setEnglishTitle(resultSet.getString(ENGLISH_TITLE_COLUMN));
                 animeInfo.setRomajiTitle(resultSet.getString(ROMAJI_TITLE_COLUMN));
                 animeInfo.setProducer(resultSet.getString(PRODUCER_COLUMN));
-                animeInfo.setSeason(resultSet.getString(SEASON_COLUMN));
                 animeInfo.setReleaseDate(resultSet.getString(RELEASE_DATE_COLUMN));
 
                 if (queryByCharater)
@@ -150,7 +149,44 @@ public class JDBCHelper
         {
             e.printStackTrace();
         }
+        updateAdditionalInfo(animeList);
         return animeList;
+    }
+
+    private void updateAdditionalInfo(ArrayList<AnimeInfo> list)
+    {
+        String sql;
+        ResultSet rs = null;
+
+        for (AnimeInfo anime : list)
+        {
+            try
+            {
+                sql = QueryBuilder.buildGetAnimeSeason(anime.getId());
+                rs = statement.executeQuery(sql);
+                rs.next();
+                anime.setSeason(rs.getString(SEASON_COLUMN));
+
+                sql = QueryBuilder.buildGetAnimeGenre(anime.getId());
+                rs = statement.executeQuery(sql);
+                rs.next();
+                anime.setGenre(rs.getString(GENRE_COLUMN));
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        try
+        {
+            if (rs != null)
+                rs.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private void startTimeCounter()
