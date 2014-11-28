@@ -11,9 +11,9 @@ public class QueryBuilder
 
     static String buildSearchAnimeByNameQuery(String approximateName, SearchFilter searchFilter)
     {
-        String query = " select a.*, as_.release_date, (s.season_in_year || ' ' || s.year) as season \n" +
-                " from \"Anime_\" as a, \"Season\" as s, \"AnimeSeason\" as as_, \"Genre\" as g \n" +
-                " where a.id = as_.anime_id and  s.id = as_.season_id and g.anime_id = a.id \n";
+        String query = " SELECT a.* \n" +
+                " FROM \"Anime_\" AS a, \"Season\" AS s, \"AnimeSeason\" AS as_, \"Genre\" AS g \n" +
+                " WHERE a.id = as_.anime_id AND  s.id = as_.season_id AND g.anime_id = a.id \n";
 
         if (approximateName != null)
         {
@@ -25,49 +25,49 @@ public class QueryBuilder
         if (searchFilter.hasStartSeason())
         {
             String[] season = (searchFilter.getStartSeason()).split(" ");
-            query += " and s.year > " + Integer.parseInt(season[1]);
+            query += " AND s.year > " + Integer.parseInt(season[1]);
         }
 
         if (searchFilter.hasEndSeason())
         {
             String[] season = (searchFilter.getEndSeason()).split(" ");
-            query += " and s.year < " + Integer.parseInt(season[1]);
+            query += " AND s.year < " + Integer.parseInt(season[1]);
         }
 
         if (searchFilter.getNumberOfMustHaveGenre() != 0)
         {
             query += " AND tag IN " + searchFilter.getMustHaveGenreInSql();
         }
-        query += " GROUP BY a.id, as_.release_date, season HAVING COUNT(tag) >= "
+        query += " GROUP BY a.id HAVING COUNT(tag) >= "
                 + searchFilter.getNumberOfMustHaveGenre() + "\n";
 
         if (searchFilter.getNumberOfExcludedGenre() != 0)
         {
-            query += " EXCEPT \n SELECT A.*, release_date, (s.season_in_year || ' ' || s.year) as season \n" +
-                    " from \"Anime_\" as a, \"Season\" as s, \"AnimeSeason\" as as_, \"Genre\" as g \n" +
-                    " where a.id = as_.anime_id and  s.id = as_.season_id and g.anime_id = a.id AND tag IN "
-                    + searchFilter.getExcludedGenreInSql();
+            query += " EXCEPT \n SELECT a.* \n" +
+                    " AND \"Anime_\" AS a, \"Season\" AS s, \"AnimeSeason\" AS as_, \"Genre\" AS g \n" +
+                    " WHERE a.id = as_.anime_id AND  s.id = as_.season_id AND g.anime_id = a.id AND tag IN "
+                    + searchFilter.getExcludedGenreInSql() + "\n";
         }
 
         if (searchFilter.hasStartSeason())
         {
             String[] season = (searchFilter.getStartSeason()).split(" ");
-            query += " EXCEPT \n SELECT A.*, release_date, (s.season_in_year || ' ' || s.year) as season \n" +
-                    " from \"Anime_\" as a, \"Season\" as s, \"AnimeSeason\" as as_, \"Genre\" as g \n" +
-                    " where a.id = as_.anime_id and  s.id = as_.season_id and g.anime_id = a.id " +
-                    " and s.year = " + Integer.parseInt(season[1]) +
-                    " and s.season_in_year in " + retrieveSeasonInStartYear(season[0]);
+            query += " EXCEPT \n SELECT a.* \n" +
+                    " FROM \"Anime_\" AS a, \"Season\" AS s, \"AnimeSeason\" AS as_, \"Genre\" AS g \n" +
+                    " WHERE a.id = as_.anime_id AND  s.id = as_.season_id AND g.anime_id = a.id " +
+                    " AND s.year = " + Integer.parseInt(season[1]) +
+                    " AND s.season_in_year in " + retrieveSeasonInStartYear(season[0]) + "\n";
 
         }
 
         if (searchFilter.hasEndSeason())
         {
             String[] season = (searchFilter.getEndSeason()).split(" ");
-            query += " EXCEPT \n SELECT A.*, release_date, (s.season_in_year || ' ' || s.year) as season \n" +
-                    " from \"Anime_\" as a, \"Season\" as s, \"AnimeSeason\" as as_, \"Genre\" as g \n" +
-                    " where a.id = as_.anime_id and  s.id = as_.season_id and g.anime_id = a.id " +
-                    " and s.year = " + Integer.parseInt(season[1]) +
-                    " and s.season_in_year in " + retrieveSeasonInEndYear(season[0]);
+            query += " EXCEPT \n SELECT a.* \n" +
+                    " FROM \"Anime_\" AS a, \"Season\" AS s, \"AnimeSeason\" AS as_, \"Genre\" AS g \n" +
+                    " WHERE a.id = as_.anime_id AND  s.id = as_.season_id AND g.anime_id = a.id " +
+                    " AND s.year = " + Integer.parseInt(season[1]) +
+                    " AND s.season_in_year in " + retrieveSeasonInEndYear(season[0]);
 
         }
 
@@ -118,25 +118,37 @@ public class QueryBuilder
     {
         String nameFilterQuery = buildSearchAnimeByNameQuery(null, searchFilter);
 
-        String query =  " SELECT a.*, c.id as char_id, c.name \n" +
+        return  " SELECT a.*, c.id as char_id, c.name \n" +
                 " FROM \"Characters\" AS C, (" + nameFilterQuery + ") AS A \n" +
                 " WHERE C.anime_id = A.id  AND UPPER(name) " +
-                " LIKE UPPER('%" + approximateName + "%')";
-
-        return query;
+                " LIKE UPPER('%" + approximateName + "%') \n";
     }
 
     static String buildSearchCharactersQuery(int animeId)
     {
         return  " SELECT c.* \n" +
                 " FROM \"Characters\" AS C \n" +
-                " WHERE c.anime_id = " + animeId;
+                " WHERE c.anime_id = " + animeId + "\n";
     }
 
     static String buildGetBookmarksQuery()
     {
-        return  " select a.*, note " +
-                " from \"Anime_\" as a, \"Bookmarks\" as b " +
-                " where a.id = b.anime_id";
+        return  " SELECT a.*, note \n" +
+                " FROM \"Anime_\" AS a, \"Bookmarks\" AS b \n" +
+                " WHERE a.id = b.anime_id \n";
+    }
+
+    public static String buildGetAnimeGenre(int animeId)
+    {
+        return  " SELECT STRING_AGG(tag, ', ') AS genre \n" +
+                " FROM \"Genre\" \n" +
+                " WHERE anime_id = " + animeId + "\n";
+    }
+
+    public static String buildGetAnimeSeason(int animeId)
+    {
+        return  " SELECT STRING_AGG(s.season_in_year || ' ' || s.year, ', ') AS season \n" +
+                " FROM \"Season\" AS s, \"AnimeSeason\" AS as_ \n" +
+                " WHERE anime_id = " + animeId + " AND s.id = as_.season_id \n";
     }
 }
