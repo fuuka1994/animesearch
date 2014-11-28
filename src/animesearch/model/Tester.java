@@ -15,7 +15,7 @@ public class Tester
         DatabaseManager manager = null;
         try
         {
-            manager = new DatabaseManager(); //DatabaseManager.getInstance();
+            manager = DatabaseManager.getInstance();
         } catch (JDBCDriverNotFoundException e)
         {
             e.printStackTrace();
@@ -27,8 +27,8 @@ public class Tester
             //notGen.add("action");
 
             ArrayList<String> andGen = new ArrayList<String>();
-            //andGen.add("drama");
-            //andGen.add("school");
+            andGen.add("shounen");
+            andGen.add("drama");
 
             try
             {
@@ -41,7 +41,7 @@ public class Tester
 
             SearchFilter filter = manager.getSearchFilter();
             filter.mustHave(andGen)
-                    .startAt("Fall 1990")
+                    .startAt("Fall 1991")
                     .endAt("Summer 2014");
 
             /*
@@ -50,8 +50,8 @@ public class Tester
             System.out.println("Begin testing........");
             long startTime = System.currentTimeMillis();
 
-            //ArrayList<AnimeInfo> animeList = manager.searchAnimeByName("naruto");
-            ArrayList<AnimeInfo> animeList = manager.searchAnimeByCharacter("naruto");
+            ArrayList<AnimeInfo> animeList = manager.searchAnimeByName("");
+            //ArrayList<AnimeInfo> animeList = manager.searchAnimeByCharacter("naruto");
 
             long runTime = System.currentTimeMillis() - startTime;
             System.out.println("Query anime returned with " + animeList.size() + " result(s) and " +
@@ -59,9 +59,9 @@ public class Tester
 
             for (AnimeInfo anime : animeList)
             {
-                System.out.println(anime.getEnglishTitle() + "\n" + anime.getReleaseDate() +
-                        "\n" + anime.getSeason());
-                System.out.println(anime.getMatchedCharacter().getName() + "\n");
+                System.out.println(anime.getEnglishTitle() + "  " + anime.getReleaseDate() +
+                        "  " + anime.getSeason());
+                //System.out.println(anime.getMatchedCharacter().getName() + "\n");
             }
 
 //            ArrayList<CharacterInfo> characterList = manager.getAnimeCharacters(1);

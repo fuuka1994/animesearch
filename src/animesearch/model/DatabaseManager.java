@@ -6,16 +6,27 @@ import java.util.ArrayList;
 
 /**
  * Provides API for accessing underlying app database.
+ * A singleton class
  */
 
 public class DatabaseManager
 {
+    private static DatabaseManager singletonDatabaseManager;
+
     private SearchFilter searchFilter;
     private JDBCHelper jdbcHelper;
 
-    public DatabaseManager()
+    private DatabaseManager()
     {
         jdbcHelper = new JDBCHelper();
+    }
+
+    public static DatabaseManager getInstance()
+    {
+        if (singletonDatabaseManager == null)
+            singletonDatabaseManager = new DatabaseManager();
+
+        return singletonDatabaseManager;
     }
 
     public void connect(String username, String password) throws DatabaseLoginFailedException

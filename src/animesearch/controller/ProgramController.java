@@ -38,13 +38,13 @@ public class ProgramController {
 			animeFilterView.setVisible(false);
 		}
 
-		if (bookmarkView == null) {
-			bookmarkView = new BookmarkView();
-			bookmarkView.setVisible(false);
-		}
+//		if (bookmarkView == null) {
+//			bookmarkView = new BookmarkView();
+//			bookmarkView.setVisible(false);
+//		}
 
 		mainView = new MainView();
-		modelManager = new DatabaseManager();
+		modelManager = DatabaseManager.getInstance();
 
 		// Instantiate mainView before this code block, because we will need
 		// it in the askUserForAuthentication() method
