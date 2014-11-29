@@ -118,13 +118,7 @@ public class JDBCHelper
             stopTimeCounter();
             while (resultSet.next())
             {
-                AnimeInfo animeInfo = new AnimeInfo();
-
-                animeInfo.setId(resultSet.getInt(ID_COLUMN));
-                animeInfo.setEnglishTitle(resultSet.getString(ENGLISH_TITLE_COLUMN));
-                animeInfo.setRomajiTitle(resultSet.getString(ROMAJI_TITLE_COLUMN));
-                animeInfo.setProducer(resultSet.getString(PRODUCER_COLUMN));
-                animeInfo.setReleaseDate(resultSet.getString(RELEASE_DATE_COLUMN));
+                AnimeInfo animeInfo = createAnimeWithBasicInfo(resultSet);
 
                 if (queryByCharater)
                 {
@@ -135,12 +129,6 @@ public class JDBCHelper
                     animeInfo.matchedCharacterIs(c);
                 }
 
-                String description = resultSet.getString(DESCRIPTION_COLUMN);
-                // Simple trick to check whether an anime has description or not
-                if (description.length() < 5)
-                {
-                    animeInfo.setDescription(description);
-                }
                 animeList.add(animeInfo);
             }
             resultSet.close();
@@ -153,6 +141,31 @@ public class JDBCHelper
         return animeList;
     }
 
+    private AnimeInfo createAnimeWithBasicInfo(ResultSet rs)
+    {
+        AnimeInfo animeInfo = new AnimeInfo();
+        try
+        {
+            animeInfo.setId(rs.getInt(ID_COLUMN));
+            animeInfo.setEnglishTitle(rs.getString(ENGLISH_TITLE_COLUMN));
+            animeInfo.setRomajiTitle(rs.getString(ROMAJI_TITLE_COLUMN));
+            animeInfo.setProducer(rs.getString(PRODUCER_COLUMN));
+            animeInfo.setReleaseDate(rs.getString(RELEASE_DATE_COLUMN));
+
+            String description = rs.getString(DESCRIPTION_COLUMN);
+            // Simple trick to check whether an anime has description or not
+            if (description.length() < 5)
+            {
+                animeInfo.setDescription(description);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return animeInfo;
+    }
     private void updateAdditionalInfo(ArrayList<AnimeInfo> list)
     {
         String sql;
@@ -227,6 +240,41 @@ public class JDBCHelper
         return characters;
     }
 
+    public int getNumberOfAnime()
+    {
+        try
+        {
+            String query = " SELECT COUNT(id) AS number_anime FROM \"Anime_\" \n";
+            ResultSet rs = statement.executeQuery(query);
+            rs.next();
+            return rs.getInt("number_anime");
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public AnimeInfo getAnimeFromOffset(int offset)
+    {
+        AnimeInfo animeInfo = new AnimeInfo();
+        try
+        {
+            String query = " SELECT * FROM \"Anime_\" OFFSET " + offset + " LIMIT 1";
+            ResultSet rs = statement.executeQuery(query);
+            rs.next();
+
+            animeInfo = createAnimeWithBasicInfo(rs);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return animeInfo;
+    }
+
     void addBookmark(int animeId, String note)
     {
         if (note == null)
@@ -243,6 +291,21 @@ public class JDBCHelper
         }
     }
 
+    public void updateBookmarkNote(int animeId, String note)
+    {
+        try
+        {
+            String query = " UPDATE \"Bookmarks\" \n" +
+                            " SET note = " + note + "\n" +
+                            " WHERE anime_id = " + animeId + "\n";
+            statement.executeUpdate(query);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     ArrayList<AnimeInfo> getBookmarkedAnime()
     {
         ArrayList<AnimeInfo> animeList = new ArrayList<>();
@@ -252,16 +315,8 @@ public class JDBCHelper
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next())
             {
-                AnimeInfo animeInfo = new AnimeInfo();
-
-                animeInfo.setId(resultSet.getInt(ID_COLUMN));
-                animeInfo.setEnglishTitle(resultSet.getString(ENGLISH_TITLE_COLUMN));
-                animeInfo.setRomajiTitle(resultSet.getString(ROMAJI_TITLE_COLUMN));
-                animeInfo.setProducer(resultSet.getString(PRODUCER_COLUMN));
-                animeInfo.setSeason("");
-                animeInfo.setReleaseDate("");
+                AnimeInfo animeInfo = createAnimeWithBasicInfo(resultSet);
                 animeInfo.setBookmarkNote(resultSet.getString(NOTE_COLUMN));
-                animeInfo.setDescription("");
 
                 animeList.add(animeInfo);
             }
@@ -275,7 +330,7 @@ public class JDBCHelper
 
     void deleteBookmark(int animeId)
     {
-        String sql = " delete from \"Bookmarks\" where anime_id=" + animeId;
+        String sql = " DELETE FROM \"Bookmarks\" WHERE anime_id=" + animeId;
         try
         {
             statement.executeQuery(sql);

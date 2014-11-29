@@ -69,6 +69,10 @@ public class Tester
 //                System.out.println(c.getName());
 //            }
 
+            AnimeInfo anime = manager.getRandomAnime();
+            System.out.println("Random anime: \n" + anime.getEnglishTitle() + "  " + anime.getReleaseDate() +
+                    "  " + anime.getSeason());
+
             manager.disconnect();
         }
     }

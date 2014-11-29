@@ -57,6 +57,14 @@ public class DatabaseManager
         return jdbcHelper.queryCharacters(query);
     }
 
+    public AnimeInfo getRandomAnime()
+    {
+        int numberOfAnime = jdbcHelper.getNumberOfAnime();
+        int randomOffset = (int) (Math.random() * numberOfAnime);
+
+        return jdbcHelper.getAnimeFromOffset(randomOffset);
+    }
+
     // Always use this method to obtain the app filter, don't manually instantiate a SearchFilter
     public SearchFilter getSearchFilter()
     {
@@ -71,6 +79,11 @@ public class DatabaseManager
     public void addBookmark(int animeId, String note)
     {
         jdbcHelper.addBookmark(animeId, note);
+    }
+
+    public void updateBookmarkNote(int animeId, String note)
+    {
+        jdbcHelper.updateBookmarkNote(animeId, note);
     }
 
     public ArrayList<AnimeInfo> getBookmarkedAnime()
