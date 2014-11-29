@@ -3,6 +3,7 @@ package animesearch.controller;
 import animesearch.exception.DatabaseLoginFailedException;
 import animesearch.model.AnimeInfo;
 import animesearch.model.DatabaseManager;
+import animesearch.model.SearchFilter;
 import animesearch.view.AnimeFilter;
 import animesearch.view.BookmarkView;
 import animesearch.view.DatabaseLoginDialog;
@@ -38,10 +39,10 @@ public class ProgramController {
 			animeFilterView.setVisible(false);
 		}
 
-//		if (bookmarkView == null) {
-//			bookmarkView = new BookmarkView();
-//			bookmarkView.setVisible(false);
-//		}
+		// if (bookmarkView == null) {
+		// bookmarkView = new BookmarkView();
+		// bookmarkView.setVisible(false);
+		// }
 
 		mainView = new MainView();
 		modelManager = DatabaseManager.getInstance();
@@ -161,6 +162,37 @@ public class ProgramController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
+				animeFilterView.setBtnOKActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						
+						if(animeFilterView.isAllTimeSelected() == true){
+							ArrayList<String> mustHaveGenre = animeFilterView.getMustHaveGenreAND();
+							ArrayList<String> excludedGenre = animeFilterView.getExcludeGenreNOT();
+							
+							SearchFilter searchFilter = modelManager.getSearchFilter();
+							searchFilter.mustHave(mustHaveGenre);
+							searchFilter.exclude(excludedGenre);
+						}else{
+							String seasonFrom = animeFilterView.getAnimeFrom();
+							String seasonTo = animeFilterView.getAnimeTo();
+							
+							ArrayList<String> mustHaveGenre = animeFilterView.getMustHaveGenreAND();
+							ArrayList<String> excludedGenre = animeFilterView.getExcludeGenreNOT();
+							
+							SearchFilter searchFilter = modelManager.getSearchFilter();
+							searchFilter.mustHave(mustHaveGenre);
+							searchFilter.exclude(excludedGenre);
+							searchFilter.startAt(seasonFrom);
+							searchFilter.endAt(seasonTo);
+						}
+						animeFilterView.setVisible(false);
+					}
+				});
+				
+				animeFilterView.setVisible(true);
 			}
 		});
 	}
@@ -200,402 +232,5 @@ public class ProgramController {
 		ProgramController programController = new ProgramController();
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Hieu's part starts from here
+	// Hieu's part starts from here
 }
