@@ -44,7 +44,7 @@ public class QueryBuilder
         if (searchFilter.getNumberOfExcludedGenre() != 0)
         {
             query += " EXCEPT \n SELECT a.* \n" +
-                    " AND \"Anime_\" AS a, \"Season\" AS s, \"AnimeSeason\" AS as_, \"Genre\" AS g \n" +
+                    " FROM \"Anime_\" AS a, \"Season\" AS s, \"AnimeSeason\" AS as_, \"Genre\" AS g \n" +
                     " WHERE a.id = as_.anime_id AND  s.id = as_.season_id AND g.anime_id = a.id AND tag IN "
                     + searchFilter.getExcludedGenreInSql() + "\n";
         }
