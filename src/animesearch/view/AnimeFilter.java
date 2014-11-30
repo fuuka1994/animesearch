@@ -176,12 +176,12 @@ public class AnimeFilter extends JDialog {
 
 	private void init() {
 		if (jcbYearFrom != null) {
-			for (int i = 1991; i < 2014; i++) {
+			for (int i = 1991; i <= 2014; i++) {
 				jcbYearFrom.addItem("" + i);
 			}
 		}
 		if (jcbYearTo != null) {
-			for (int i = 1991; i < 2014; i++) {
+			for (int i = 1991; i <= 2014; i++) {
 				jcbYearTo.addItem("" + i);
 			}
 		}

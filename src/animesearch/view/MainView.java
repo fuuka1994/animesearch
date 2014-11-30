@@ -224,7 +224,7 @@ public class MainView extends JFrame {
 		labelEngTitle.setBackground(Theme.getColor(4));
 		informationPanel.add(labelEngTitle);
 
-		JLabel labelEngTitleValue = new JLabel("<html>" + animeInfo.getEnglishTitle() + "</html>", JLabel.LEFT);
+		JLabel labelEngTitleValue = new JLabel(animeInfo.getEnglishTitle(), JLabel.LEFT);
 		labelEngTitleValue.setBounds(115, 0, 430, 30);
 		labelEngTitleValue.setForeground(Theme.getColor(4));
 		informationPanel.add(labelEngTitleValue);
@@ -235,7 +235,7 @@ public class MainView extends JFrame {
 		labelRomajiTitle.setBackground(Theme.getColor(4));
 		informationPanel.add(labelRomajiTitle);
 
-		JLabel labelRomajiTitleValue = new JLabel("<html>" + animeInfo.getRomajiTitle() + "</html>", JLabel.LEFT);
+		JLabel labelRomajiTitleValue = new JLabel(animeInfo.getRomajiTitle(), JLabel.LEFT);
 		labelRomajiTitleValue.setBounds(115, 20, 430, 30);
 		labelRomajiTitleValue.setForeground(Theme.getColor(4));
 		informationPanel.add(labelRomajiTitleValue);
@@ -269,9 +269,19 @@ public class MainView extends JFrame {
 		labelReleaseDateValue.setBounds(115, 80, 430, 30);
 		labelReleaseDateValue.setForeground(Theme.getColor(4));
 		informationPanel.add(labelReleaseDateValue);
+		
+		JLabel labelGenre = new JLabel("Genre", JLabel.LEFT);
+		labelGenre.setBounds(20, 100, 100, 30);
+		labelGenre.setForeground(Theme.getColor(3));
+		informationPanel.add(labelGenre);
+
+		JLabel labelGenreValue = new JLabel(animeInfo.getGenre(), JLabel.LEFT);
+		labelGenreValue.setBounds(115, 100, 430, 30);
+		labelGenreValue.setForeground(Theme.getColor(4));
+		informationPanel.add(labelGenreValue);
 
 		JLabel labelDescription = new JLabel("Description", JLabel.LEFT);
-		labelDescription.setBounds(20, 100, 100, 30);
+		labelDescription.setBounds(20, 120, 100, 30);
 		labelDescription.setForeground(Theme.getColor(3));
 		informationPanel.add(labelDescription);
 
@@ -282,7 +292,7 @@ public class MainView extends JFrame {
 		textAreaDescriptionValue.setEditable(false);
 
 		JScrollPane paneDescription = new JScrollPane(textAreaDescriptionValue);
-		paneDescription.setBounds(115, 110, 430, 170);
+		paneDescription.setBounds(115, 130, 430, 150);
 		informationPanel.add(paneDescription);
 
 		resultImage.changeImage(ANIME_COVER_FOLDER + animeInfo.getId() + ".jpg");

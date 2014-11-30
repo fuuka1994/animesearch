@@ -79,6 +79,12 @@ public class SearchFilter implements Serializable
         this.endSeason = seasonTo;
         return this;
     }
+    
+    public SearchFilter clearTimeFilter() {
+		this.startSeason = null;
+		this.endSeason = null;
+		return this;
+	}
 
     boolean hasStartSeason()
     {

@@ -154,7 +154,7 @@ public class JDBCHelper
 
             String description = rs.getString(DESCRIPTION_COLUMN);
             // Simple trick to check whether an anime has description or not
-            if (description.length() < 5)
+            if (description.length() > 5)
             {
                 animeInfo.setDescription(description);
             }

@@ -175,6 +175,7 @@ public class ProgramController {
 							SearchFilter searchFilter = modelManager.getSearchFilter();
 							searchFilter.mustHave(mustHaveGenre);
 							searchFilter.exclude(excludedGenre);
+							searchFilter.clearTimeFilter();
 						}else{
 							String seasonFrom = animeFilterView.getAnimeFrom();
 							String seasonTo = animeFilterView.getAnimeTo();
