@@ -140,7 +140,7 @@ public class QueryBuilder
 
     public static String buildGetAnimeGenre(int animeId)
     {
-        return  " SELECT STRING_AGG(tag, ', ') AS genre \n" +
+        return  " SELECT STRING_AGG(INITCAP(tag), ', ') AS genre \n" +
                 " FROM \"Genre\" \n" +
                 " WHERE anime_id = " + animeId + "\n";
     }
