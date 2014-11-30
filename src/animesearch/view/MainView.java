@@ -181,7 +181,7 @@ public class MainView extends JFrame {
 			name1Label.setForeground(Theme.getColor(4));
 			resultPanel.add(name1Label);
 
-			JLabel name2Label = new JLabel("<html><div><p style='color:red'>In anime:</p>" + animeInfo.getEnglishTitle() + "</div></html>");
+			JLabel name2Label = new JLabel("<html><font color='red'>In anime: </font>" + animeInfo.getEnglishTitle() + "</html>");
 			name2Label.setBounds(120, 55, 250, 35);
 			name2Label.setForeground(Theme.getColor(4));
 			resultPanel.add(name2Label);
@@ -227,6 +227,7 @@ public class MainView extends JFrame {
 		JLabel labelEngTitleValue = new JLabel(animeInfo.getEnglishTitle(), JLabel.LEFT);
 		labelEngTitleValue.setBounds(115, 0, 430, 30);
 		labelEngTitleValue.setForeground(Theme.getColor(4));
+		labelEngTitleValue.setToolTipText(animeInfo.getEnglishTitle());
 		informationPanel.add(labelEngTitleValue);
 
 		JLabel labelRomajiTitle = new JLabel("Romaji title", JLabel.LEFT);
@@ -238,6 +239,7 @@ public class MainView extends JFrame {
 		JLabel labelRomajiTitleValue = new JLabel(animeInfo.getRomajiTitle(), JLabel.LEFT);
 		labelRomajiTitleValue.setBounds(115, 20, 430, 30);
 		labelRomajiTitleValue.setForeground(Theme.getColor(4));
+		labelRomajiTitleValue.setToolTipText(animeInfo.getRomajiTitle());
 		informationPanel.add(labelRomajiTitleValue);
 
 		JLabel labelSeason = new JLabel("Season", JLabel.LEFT);
@@ -248,6 +250,7 @@ public class MainView extends JFrame {
 		JLabel labelSeasonValue = new JLabel(animeInfo.getSeason(), JLabel.LEFT);
 		labelSeasonValue.setBounds(115, 40, 430, 30);
 		labelSeasonValue.setForeground(Theme.getColor(4));
+		labelSeasonValue.setToolTipText(animeInfo.getSeason());
 		informationPanel.add(labelSeasonValue);
 
 		JLabel labelProducer = new JLabel("Producer", JLabel.LEFT);
@@ -278,6 +281,7 @@ public class MainView extends JFrame {
 		JLabel labelGenreValue = new JLabel(animeInfo.getGenre(), JLabel.LEFT);
 		labelGenreValue.setBounds(115, 100, 430, 30);
 		labelGenreValue.setForeground(Theme.getColor(4));
+		labelGenreValue.setToolTipText(animeInfo.getGenre());
 		informationPanel.add(labelGenreValue);
 
 		JLabel labelDescription = new JLabel("Description", JLabel.LEFT);

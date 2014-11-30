@@ -172,6 +172,7 @@ public class AnimeFilter extends JDialog {
 		}
 
 		init();
+		chckbxAllTime.doClick();
 	}
 
 	private void init() {
