@@ -261,8 +261,10 @@ public class JDBCHelper
         AnimeInfo animeInfo = new AnimeInfo();
         try
         {
-            String query = " SELECT * FROM \"Anime_\" OFFSET " + offset + " LIMIT 1";
-            ResultSet rs = statement.executeQuery(query);
+            lastQuery = " SELECT * FROM \"Anime_\" OFFSET " + offset + " LIMIT 1";
+            startTimeCounter();
+            ResultSet rs = statement.executeQuery(lastQuery);
+            stopTimeCounter();
             rs.next();
 
             animeInfo = createAnimeWithBasicInfo(rs);
@@ -296,8 +298,8 @@ public class JDBCHelper
         try
         {
             String query = " UPDATE \"Bookmarks\" \n" +
-                            " SET note = " + note + "\n" +
-                            " WHERE anime_id = " + animeId + "\n";
+                    " SET note = " + note + "\n" +
+                    " WHERE anime_id = " + animeId + "\n";
             statement.executeUpdate(query);
         }
         catch (SQLException e)
@@ -309,10 +311,12 @@ public class JDBCHelper
     ArrayList<AnimeInfo> getBookmarkedAnime()
     {
         ArrayList<AnimeInfo> animeList = new ArrayList<>();
-        String query = QueryBuilder.buildGetBookmarksQuery();
+        lastQuery = QueryBuilder.buildGetBookmarksQuery();
         try
         {
-            ResultSet resultSet = statement.executeQuery(query);
+            startTimeCounter();
+            ResultSet resultSet = statement.executeQuery(lastQuery);
+            stopTimeCounter();
             while (resultSet.next())
             {
                 AnimeInfo animeInfo = createAnimeWithBasicInfo(resultSet);
