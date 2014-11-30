@@ -199,6 +199,7 @@ public class MainView extends JFrame {
 		characterPanel.setPreferredSize(new Dimension(130, 150));
 		characterPanel.setBackground(Theme.getColor(0));
 		characterPanel.setLayout(null);
+		characterPanel.setToolTipText(characterInfo.getName());
 
 		ImageLabel avatarLabel = new ImageLabel(CHARACTER_IMAGE_FOLDER + characterInfo.getId() + "_" + characterInfo.getAnimeId() + "_.jpg", 120, 120);
 		avatarLabel.setBounds(10, 10, 110, 110);
