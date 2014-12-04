@@ -123,9 +123,8 @@ public class ProgramController {
 				mainView.setProducerLabelMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						ArrayList<AnimeInfo> animeList =
-								modelManager.searchAnimeByProducer(animeInfo.getProducer());
-						mainView.setListOfResult(animeList);
+						arrayResultSearch = modelManager.searchAnimeByProducer(animeInfo.getProducer());
+						mainView.setListOfResult(arrayResultSearch);
 					}
 				});
 
