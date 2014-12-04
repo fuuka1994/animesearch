@@ -2,13 +2,8 @@ package animesearch.view;
 
 import animesearch.model.AnimeInfo;
 import animesearch.model.CharacterInfo;
-import animesearch.view.ImageLabel;
-import animesearch.view.ImageButton;
-import animesearch.view.PatternPanel;
-import animesearch.view.Theme;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -38,6 +33,7 @@ public class MainView extends JFrame {
 	private TwoStateButton toggleButton;
 	private TwoStateButtonBookmark loveButton;
 	private JScrollPane informationPane;
+	private JPanel informationPanel;
 	private JList<JPanel> characterList;
 	private DefaultListModel<JPanel> characterListModel;
 	private PanelListCellRenderer characterRenderer;
@@ -214,7 +210,7 @@ public class MainView extends JFrame {
 	}
 
 	private JPanel getInformationPanel(AnimeInfo animeInfo) {
-		JPanel informationPanel = new JPanel();
+		informationPanel = new JPanel();
 		informationPanel.setPreferredSize(new Dimension(320, 100));
 		informationPanel.setBackground(Theme.getColor(0));
 		informationPanel.setLayout(null);
@@ -259,7 +255,9 @@ public class MainView extends JFrame {
 		labelProducer.setForeground(Theme.getColor(3));
 		informationPanel.add(labelProducer);
 
-		JLabel labelProducerValue = new JLabel(animeInfo.getProducer(), JLabel.LEFT);
+		JLabelLink labelProducerValue = new JLabelLink(animeInfo.getProducer(), JLabel.LEFT);
+		// For easily finding this label later, give it a name.
+		labelProducerValue.setName("producer");
 		labelProducerValue.setBounds(115, 60, 430, 30);
 		labelProducerValue.setForeground(Theme.getColor(4));
 		informationPanel.add(labelProducerValue);
@@ -382,5 +380,17 @@ public class MainView extends JFrame {
 
 	public int getSelectedAnimeIndex() {
 		return resultList.getSelectedIndex();
+	}
+
+	public void setProducerLabelMouseListener(MouseListener listener) {
+		Component[] components = informationPanel.getComponents();
+		for (Component c : components) {
+			if (c instanceof JLabelLink && c.getName().equals("producer")) {
+				((JLabelLink) c).setMouseClickListener(listener);
+
+				// Already found what we need, break loop here
+				break;
+			}
+		}
 	}
 }

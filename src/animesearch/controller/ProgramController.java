@@ -12,9 +12,7 @@ import animesearch.view.TwoStateButton;
 
 import javax.swing.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -114,40 +112,23 @@ public class ProgramController {
 	}
 
 	private void showInfo() {
-		// TODO Auto-generated method stub
-		mainView.setResultListListener(new MouseListener() {
-
-			@Override
-			public void mouseReleased(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mousePressed(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
+		mainView.setResultListListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
 				// Action goes here
-				AnimeInfo animeInfo = arrayResultSearch.get(mainView.getSelectedAnimeIndex());
+				final AnimeInfo animeInfo = arrayResultSearch.get(mainView.getSelectedAnimeIndex());
 				mainView.setInformation(animeInfo);
 				animeInfo.setCharacters(modelManager.getAnimeCharacters(animeInfo.getId()));
+
+				mainView.setProducerLabelMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						ArrayList<AnimeInfo> animeList =
+								modelManager.searchAnimeByProducer(animeInfo.getProducer());
+						mainView.setListOfResult(animeList);
+					}
+				});
+
 				mainView.setListOfCharacter(animeInfo);
 			}
 		});
