@@ -68,6 +68,12 @@ public class ProgramController {
 		addTextFieldListener();
 		addFilterButtonListener();
 		showInfo();
+		showRecommendedAnime();
+	}
+
+	private void showRecommendedAnime() {
+		// TODO Auto-generated method stub
+		mainView.setRandomAnime(modelManager.getRandomAnime());
 	}
 
 	private void askUserForAuthentication() {
