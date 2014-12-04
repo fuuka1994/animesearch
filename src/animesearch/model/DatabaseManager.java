@@ -51,6 +51,12 @@ public class DatabaseManager
         return jdbcHelper.queryAnime(query, true);
     }
 
+    public ArrayList<AnimeInfo> searchAnimeByProducer(String producer)
+    {
+        String query = QueryBuilder.buildSearchAnimeByProducer(producer);
+        return jdbcHelper.queryAnime(query, false);
+    }
+
     public ArrayList<CharacterInfo> getAnimeCharacters(int animeId)
     {
         String query = QueryBuilder.buildSearchCharactersQuery(animeId);

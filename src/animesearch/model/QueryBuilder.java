@@ -151,4 +151,11 @@ public class QueryBuilder
                 " FROM \"Season\" AS s, \"AnimeSeason\" AS as_ \n" +
                 " WHERE anime_id = " + animeId + " AND s.id = as_.season_id \n";
     }
+
+    public static String buildSearchAnimeByProducer(String producer)
+    {
+        return  " SELECT * \n" +
+                " FROM \"Anime_\" \n" +
+                " WHERE producer = '" + producer + "'\n";
+    }
 }
