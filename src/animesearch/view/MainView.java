@@ -333,8 +333,18 @@ public class MainView extends JFrame {
 		characterListModel.clear();
 		characterRenderer = new PanelListCellRenderer();
 		characterList.setCellRenderer(characterRenderer);
-		for (CharacterInfo characterInfo : selectedAnime.getCharacters()) {
-			characterListModel.addElement(getCharacterPanel(characterInfo));
+		for (final CharacterInfo characterInfo : selectedAnime.getCharacters()) {
+			// For each character, create a thread to get and display character
+			// panel, with "characterListModel" as a lock to prevent errors
+			// cause by thread interference
+			(new Thread() {
+				@Override
+				public void run() {
+					synchronized (characterListModel) {
+						characterListModel.addElement(getCharacterPanel(characterInfo));
+					}
+				}
+			}).start();
 		}
 	}
 
