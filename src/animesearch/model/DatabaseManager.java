@@ -97,16 +97,6 @@ public class DatabaseManager
         return jdbcHelper.getBookmarkedAnime();
     }
 
-    public boolean checkBookmarkState(AnimeInfo animeInfo) {
-    	for (AnimeInfo item : getBookmarkedAnime()) {
-			if (item.getId() == animeInfo.getId()) {
-				return true;
-			}
-		}
-    	
-    	return false;
-    }
-    
     public void deleteBookmark(int animeId) {
         jdbcHelper.deleteBookmark(animeId);
     }

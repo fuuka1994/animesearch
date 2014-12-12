@@ -69,7 +69,7 @@ public class BookmarkView extends JFrame {
 	public BookmarkView() {
 		setType(Type.POPUP);
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 580, 388);
 		getContentPane().setBackground(Theme.getColor(2));
 		contentPane = new JPanel();
