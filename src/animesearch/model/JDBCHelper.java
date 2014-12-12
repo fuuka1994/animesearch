@@ -282,11 +282,11 @@ public class JDBCHelper
         if (note == null)
             note = "";
 
-        String query = "insert into \"Bookmarks\" set anime_id=" + animeId
-                + ", note='" + note + "'";
+        String query = "insert into \"Bookmarks\" values (" + animeId
+                + ", '" + note + "')";
         try
         {
-            statement.executeQuery(query);
+            statement.executeUpdate(query);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -337,7 +337,7 @@ public class JDBCHelper
         String sql = " DELETE FROM \"Bookmarks\" WHERE anime_id=" + animeId;
         try
         {
-            statement.executeQuery(sql);
+            statement.executeUpdate(sql);
         }
         catch (SQLException e)
         {
