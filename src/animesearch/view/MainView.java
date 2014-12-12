@@ -4,6 +4,7 @@ import animesearch.model.AnimeInfo;
 import animesearch.model.CharacterInfo;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -271,7 +272,7 @@ public class MainView extends JFrame {
 		labelReleaseDateValue.setBounds(115, 80, 430, 30);
 		labelReleaseDateValue.setForeground(Theme.getColor(4));
 		informationPanel.add(labelReleaseDateValue);
-		
+
 		JLabel labelGenre = new JLabel("Genre", JLabel.LEFT);
 		labelGenre.setBounds(20, 100, 100, 30);
 		labelGenre.setForeground(Theme.getColor(3));
@@ -324,7 +325,7 @@ public class MainView extends JFrame {
 		resultListModel.clear();
 		resultRenderer = new PanelListCellRenderer();
 		resultList.setCellRenderer(resultRenderer);
-		for (AnimeInfo animeInfo : animeInfoList) {
+		for (final AnimeInfo animeInfo : animeInfoList) {
 			resultListModel.addElement(getResultPanel(animeInfo));
 		}
 	}

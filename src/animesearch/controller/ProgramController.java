@@ -5,10 +5,10 @@ import animesearch.model.AnimeInfo;
 import animesearch.model.DatabaseManager;
 import animesearch.model.SearchFilter;
 import animesearch.view.AnimeFilter;
-import animesearch.view.BookmarkView;
 import animesearch.view.DatabaseLoginDialog;
 import animesearch.view.MainView;
 import animesearch.view.TwoStateButton;
+import animesearch.view.TwoStateButtonBookmark;
 
 import javax.swing.*;
 
@@ -24,7 +24,6 @@ public class ProgramController {
 	private MainView mainView;
 	private static AnimeFilter animeFilterView = null;
 	private ArrayList<AnimeInfo> arrayResultSearch;
-	private static BookmarkView bookmarkView = null;
 
 	private static DatabaseLoginDialog loginDialog = null;
 	private static int numberOfLogin = 0;
@@ -36,11 +35,6 @@ public class ProgramController {
 			animeFilterView = new AnimeFilter();
 			animeFilterView.setVisible(false);
 		}
-
-		// if (bookmarkView == null) {
-		// bookmarkView = new BookmarkView();
-		// bookmarkView.setVisible(false);
-		// }
 
 		mainView = new MainView();
 		modelManager = DatabaseManager.getInstance();
@@ -62,18 +56,49 @@ public class ProgramController {
 		}
 
 		modelManager.getSearchFilter();
-		mainView.setVisible(true);
 
 		// Implementation
 		addTextFieldListener();
 		addFilterButtonListener();
+		addLoveButtonListener();
+		addBookmarkButtonListener();
 		showInfo();
 		showRecommendedAnime();
+
+		mainView.setVisible(true);
 	}
 
 	private void showRecommendedAnime() {
 		// TODO Auto-generated method stub
 		mainView.setRandomAnime(modelManager.getRandomAnime());
+	}
+
+	private void addLoveButtonListener() {
+		// TODO Auto-generated method stub
+		mainView.addLoveButtonActionListerner(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (mainView.getStateOfLoveButton() == TwoStateButtonBookmark.BOOKMARK_OFF) {
+					modelManager.addBookmark(arrayResultSearch.get(mainView.getSelectedAnimeIndex()).getId(), "Test");
+				} else {
+					modelManager.deleteBookmark(arrayResultSearch.get(mainView.getSelectedAnimeIndex()).getId());
+				}
+			}
+		});
+	}
+
+	private void addBookmarkButtonListener() {
+		// TODO Auto-generated method stub
+		mainView.addBookmarkButtonActionListerner(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				new BookmarkController();
+			}
+		});
 	}
 
 	private void askUserForAuthentication() {
@@ -135,6 +160,13 @@ public class ProgramController {
 				});
 
 				mainView.setListOfCharacter(animeInfo);
+				if (modelManager.checkBookmarkState(animeInfo)) {
+					System.out.println(modelManager.checkBookmarkState(animeInfo));
+					mainView.setStateOfLoveButton(TwoStateButtonBookmark.BOOKMARK_ON);
+				} else {
+					System.out.println(modelManager.checkBookmarkState(animeInfo));
+					mainView.setStateOfLoveButton(TwoStateButtonBookmark.BOOKMARK_OFF);
+				}
 			}
 		});
 
@@ -149,26 +181,26 @@ public class ProgramController {
 				// TODO Auto-generated method stub
 
 				animeFilterView.setBtnOKActionListener(new ActionListener() {
-					
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
-						
-						if(animeFilterView.isAllTimeSelected() == true){
+
+						if (animeFilterView.isAllTimeSelected() == true) {
 							ArrayList<String> mustHaveGenre = animeFilterView.getMustHaveGenreAND();
 							ArrayList<String> excludedGenre = animeFilterView.getExcludeGenreNOT();
-							
+
 							SearchFilter searchFilter = modelManager.getSearchFilter();
 							searchFilter.mustHave(mustHaveGenre);
 							searchFilter.exclude(excludedGenre);
 							searchFilter.clearTimeFilter();
-						}else{
+						} else {
 							String seasonFrom = animeFilterView.getAnimeFrom();
 							String seasonTo = animeFilterView.getAnimeTo();
-							
+
 							ArrayList<String> mustHaveGenre = animeFilterView.getMustHaveGenreAND();
 							ArrayList<String> excludedGenre = animeFilterView.getExcludeGenreNOT();
-							
+
 							SearchFilter searchFilter = modelManager.getSearchFilter();
 							searchFilter.mustHave(mustHaveGenre);
 							searchFilter.exclude(excludedGenre);
@@ -178,7 +210,7 @@ public class ProgramController {
 						animeFilterView.setVisible(false);
 					}
 				});
-				
+
 				animeFilterView.setVisible(true);
 			}
 		});
@@ -190,18 +222,14 @@ public class ProgramController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if (mainView.getTextInSearchTextField().length() < 3) {
-					JOptionPane.showMessageDialog(mainView, "In order to provide the best precise result, input search string must contain 3 or more characters");
+				if (mainView.getStateOfToggleButton() == TwoStateButton.ANIME_MODE) {
+					String text = mainView.getTextInSearchTextField();
+					arrayResultSearch = modelManager.searchAnimeByName(text);
+					mainView.setListOfResult(arrayResultSearch);
 				} else {
-					if (mainView.getStateOfToggleButton() == TwoStateButton.ANIME_MODE) {
-						String text = mainView.getTextInSearchTextField();
-						arrayResultSearch = modelManager.searchAnimeByName(text);
-						mainView.setListOfResult(arrayResultSearch);
-					} else {
-						String text = mainView.getTextInSearchTextField();
-						arrayResultSearch = modelManager.searchAnimeByCharacter(text);
-						mainView.setListOfResult(arrayResultSearch);
-					}
+					String text = mainView.getTextInSearchTextField();
+					arrayResultSearch = modelManager.searchAnimeByCharacter(text);
+					mainView.setListOfResult(arrayResultSearch);
 				}
 			}
 		});
@@ -218,6 +246,4 @@ public class ProgramController {
 
 		ProgramController programController = new ProgramController();
 	}
-
-	// Hieu's part starts from here
 }
