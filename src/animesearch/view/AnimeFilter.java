@@ -28,31 +28,6 @@ public class AnimeFilter extends JDialog {
 	private List<ThreeStateButton> demographicButtons;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					final AnimeFilter frame = new AnimeFilter();
-					frame.setBtnOKActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							// TODO Auto-generated method stub
-							System.out.println("FUCKING PRINT THIS LINE");
-							System.out.println("AND: " + frame.getMustHaveGenreAND() + "\nNOT: " + frame.getExcludeGenreNOT());
-						}
-					});
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
 	public AnimeFilter() {

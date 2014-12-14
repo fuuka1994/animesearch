@@ -1,5 +1,7 @@
 package animesearch.controller;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import animesearch.model.AnimeInfo;
@@ -8,6 +10,9 @@ import animesearch.view.BookmarkView;
 
 public class BookmarkController {
 	private BookmarkView bookmarkView;
+	private ArrayList<AnimeInfo> animeInfoList;
+
+	public ProgramController delegate;
 
 	public BookmarkController() {
 		super();
@@ -15,9 +20,26 @@ public class BookmarkController {
 			bookmarkView = new BookmarkView();
 		}
 
-		ArrayList<AnimeInfo> animeInfoList = DatabaseManager.getInstance().getBookmarkedAnime();
+		animeInfoList = DatabaseManager.getInstance().getBookmarkedAnime();
 		bookmarkView.setListOfResult(animeInfoList);
 
-		bookmarkView.setVisible(true);
+		bookmarkView.setbookmarkListListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				AnimeInfo animeInfo = animeInfoList.get(bookmarkView.getSelectedAnimeIndex());
+				animeInfo.setCharacters(DatabaseManager.getInstance().getAnimeCharacters(animeInfo.getId()));
+				delegate.showItemToInfoView(animeInfo);
+			}
+		});
+	}
+
+	public void refreshView() {
+		animeInfoList = DatabaseManager.getInstance().getBookmarkedAnime();
+		bookmarkView.setListOfResult(animeInfoList);
+	}
+
+	public void setVisibleOfView(boolean isVisible) {
+		bookmarkView.setVisible(isVisible);
 	}
 }

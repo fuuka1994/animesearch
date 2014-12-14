@@ -5,6 +5,7 @@ import animesearch.model.AnimeInfo;
 import animesearch.model.DatabaseManager;
 import animesearch.model.SearchFilter;
 import animesearch.view.AnimeFilter;
+import animesearch.view.BookmarkViewDelegate;
 import animesearch.view.DatabaseLoginDialog;
 import animesearch.view.MainView;
 import animesearch.view.TwoStateButton;
@@ -19,7 +20,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-public class ProgramController {
+public class ProgramController implements BookmarkViewDelegate {
 	private DatabaseManager modelManager;
 	private MainView mainView;
 	private static AnimeFilter animeFilterView = null;
@@ -91,12 +92,17 @@ public class ProgramController {
 
 	private void addBookmarkButtonListener() {
 		// TODO Auto-generated method stub
+		BookmarkController bookmarkController = new BookmarkController();
+		bookmarkController.delegate = this;
+		bookmarkController.setVisibleOfView(false);
+
 		mainView.addBookmarkButtonActionListerner(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				new BookmarkController();
+				bookmarkController.refreshView();
+				bookmarkController.setVisibleOfView(true);
 			}
 		});
 	}
@@ -245,5 +251,12 @@ public class ProgramController {
 		}
 
 		ProgramController programController = new ProgramController();
+	}
+
+	@Override
+	public void showItemToInfoView(AnimeInfo animeInfo) {
+		// TODO Auto-generated method stub
+		mainView.setInformation(animeInfo);
+		mainView.setListOfCharacter(animeInfo);
 	}
 }

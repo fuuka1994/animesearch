@@ -45,23 +45,6 @@ public class BookmarkView extends JFrame {
 	private JList<JPanel> bookmarkList;
 	private DefaultListModel<JPanel> bookmarkListModel;
 	private PanelListCellRenderer resultRenderer;
-	
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					BookmarkView frame = new BookmarkView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
