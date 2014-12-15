@@ -137,7 +137,7 @@ public class JDBCHelper
         {
             e.printStackTrace();
         }
-        updateAdditionalInfo(animeList);
+        updateGenreAndSeasonInfo(animeList);
         return animeList;
     }
 
@@ -166,7 +166,7 @@ public class JDBCHelper
 
         return animeInfo;
     }
-    private void updateAdditionalInfo(ArrayList<AnimeInfo> list)
+    private void updateGenreAndSeasonInfo(ArrayList<AnimeInfo> list)
     {
         String sql;
         ResultSet rs = null;
@@ -329,6 +329,8 @@ public class JDBCHelper
         {
             e.printStackTrace();
         }
+
+        updateGenreAndSeasonInfo(animeList);
         return animeList;
     }
 
