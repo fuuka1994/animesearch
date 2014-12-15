@@ -92,7 +92,7 @@ public class ProgramController implements BookmarkViewDelegate {
 
 	private void addBookmarkButtonListener() {
 		// TODO Auto-generated method stub
-		BookmarkController bookmarkController = new BookmarkController();
+		final BookmarkController bookmarkController = new BookmarkController();
 		bookmarkController.delegate = this;
 		bookmarkController.setVisibleOfView(false);
 
