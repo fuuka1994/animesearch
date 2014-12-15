@@ -90,23 +90,33 @@ public class BookmarkView extends JFrame {
 	
 	private JPanel getResultPanel(AnimeInfo animeInfo) {
 		JPanel resultPanel = new JPanel();
-		resultPanel.setPreferredSize(new Dimension(380, 100));
+		resultPanel.setPreferredSize(new Dimension(380, 120));
 		resultPanel.setBackground(Theme.getColor(0));
 		resultPanel.setLayout(null);
 
 		ImageLabel avatarLabel = new ImageLabel(ANIME_COVER_FOLDER + Integer.toString(animeInfo.getId()) + ".jpg", 80, 80);
-		avatarLabel.setBounds(10, 10, 80, 80);
+		avatarLabel.setBounds(10, 20, 80, 80);
 		resultPanel.add(avatarLabel);
 
 		JLabel name1Label = new JLabel(animeInfo.getEnglishTitle());
-		name1Label.setBounds(120, 10, 250, 35);
+		name1Label.setBounds(120, 10, 250, 30);
 		name1Label.setForeground(Theme.getColor(4));
 		resultPanel.add(name1Label);
 
 		JLabel name2Label = new JLabel(animeInfo.getRomajiTitle());
-		name2Label.setBounds(120, 55, 250, 35);
+		name2Label.setBounds(120, 50, 250, 30);
 		name2Label.setForeground(Theme.getColor(4));
 		resultPanel.add(name2Label);
+		
+		JTextArea noteLabel = new JTextArea(animeInfo.getBookmarkNote());
+		noteLabel.setBounds(120, 90, 250, 20);
+		noteLabel.setForeground(Theme.getColor(4));
+		noteLabel.setLineWrap(true);
+		noteLabel.setWrapStyleWord(true);
+		Font font = new Font("Verdana", Font.BOLD, 11);
+		noteLabel.setFont(font);;
+		noteLabel.setToolTipText(animeInfo.getBookmarkNote());
+		resultPanel.add(noteLabel);
 
 		return resultPanel;
 	}
