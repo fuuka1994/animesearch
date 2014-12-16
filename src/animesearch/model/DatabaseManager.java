@@ -41,18 +41,21 @@ public class DatabaseManager
 
     public ArrayList<AnimeInfo> searchAnimeByName(String approximateName)
     {
+        approximateName = escapeSqlString(approximateName);
         String query = QueryBuilder.buildSearchAnimeByNameQuery(approximateName, searchFilter);
         return jdbcHelper.queryAnime(query, false);
     }
 
     public ArrayList<AnimeInfo> searchAnimeByCharacter(String approximateName)
     {
+        approximateName = escapeSqlString(approximateName);
         String query = QueryBuilder.buildSearchAnimeByCharacterQuery(approximateName, searchFilter);
         return jdbcHelper.queryAnime(query, true);
     }
 
     public ArrayList<AnimeInfo> searchAnimeByProducer(String producer)
     {
+        producer = escapeSqlString(producer);
         String query = QueryBuilder.buildSearchAnimeByProducer(producer);
         return jdbcHelper.queryAnime(query, false);
     }
@@ -119,5 +122,14 @@ public class DatabaseManager
     public long getLastQueryRuntime()
     {
         return jdbcHelper.getLastQueryRuntime();
+    }
+
+    private String escapeSqlString(String input)
+    {
+        input = input.replaceAll("'", "''");
+        input = input.replaceAll("%", "\\\\%");
+        input = input.replaceAll("_", "\\\\_");
+
+        return input;
     }
 }
