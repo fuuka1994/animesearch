@@ -2,7 +2,10 @@ package animesearch.view;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -47,6 +50,22 @@ public class ImageButton extends JButton {
 		setOpaque(false);
 		setContentAreaFilled(false);
 		setBorderPainted(false);
+		
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				state = true;
+				hover();
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				state = false;
+				hover();
+			}
+		});
 	}
 	
 	/**

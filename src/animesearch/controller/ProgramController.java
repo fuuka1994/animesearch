@@ -13,6 +13,7 @@ import animesearch.view.TwoStateButtonBookmark;
 
 import javax.swing.*;
 
+import java.awt.TextArea;
 import java.awt.event.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -59,6 +60,7 @@ public class ProgramController implements BookmarkViewDelegate {
 		modelManager.getSearchFilter();
 
 		// Implementation
+		addMainViewWindowListener();
 		addTextFieldListener();
 		addFilterButtonListener();
 		addLoveButtonListener();
@@ -67,6 +69,54 @@ public class ProgramController implements BookmarkViewDelegate {
 		showRecommendedAnime();
 
 		mainView.setVisible(true);
+	}
+
+	private void addMainViewWindowListener() {
+		// TODO Auto-generated method stub
+		mainView.addWindowListener(new WindowListener() {
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				modelManager.disconnect();
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 	}
 
 	private void showRecommendedAnime() {
@@ -82,7 +132,8 @@ public class ProgramController implements BookmarkViewDelegate {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if (mainView.getStateOfLoveButton() == TwoStateButtonBookmark.BOOKMARK_OFF) {
-					modelManager.addBookmark(arrayResultSearch.get(mainView.getSelectedAnimeIndex()).getId(), "Test");
+					String note = JOptionPane.showInputDialog("Input note", "Note goes here");
+					modelManager.addBookmark(arrayResultSearch.get(mainView.getSelectedAnimeIndex()).getId(), note);
 				} else {
 					modelManager.deleteBookmark(arrayResultSearch.get(mainView.getSelectedAnimeIndex()).getId());
 				}
@@ -165,6 +216,7 @@ public class ProgramController implements BookmarkViewDelegate {
 					}
 				});
 
+				mainView.setLoveButtonEnabledState(true);
 				mainView.setListOfCharacter(animeInfo);
 				if (modelManager.checkBookmarkState(animeInfo)) {
 					System.out.println(modelManager.checkBookmarkState(animeInfo));
@@ -258,5 +310,14 @@ public class ProgramController implements BookmarkViewDelegate {
 		// TODO Auto-generated method stub
 		mainView.setInformation(animeInfo);
 		mainView.setListOfCharacter(animeInfo);
+		mainView.setProducerLabelMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				arrayResultSearch = modelManager.searchAnimeByProducer(animeInfo.getProducer());
+				mainView.setListOfResult(arrayResultSearch);
+			}
+		});
+
+		mainView.setLoveButtonEnabledState(false);
 	}
 }

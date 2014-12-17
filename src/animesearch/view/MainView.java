@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowListener;
 import java.util.List;
 
 public class MainView extends JFrame {
@@ -369,6 +370,10 @@ public class MainView extends JFrame {
 		loveButton.setState(state);
 	}
 
+	public void setLoveButtonEnabledState(boolean state) {
+		loveButton.setEnabled(state);
+	}
+
 	public void addFilterButtonActionListerner(ActionListener listener) {
 		filterButton.addActionListener(listener);
 	}
@@ -403,5 +408,9 @@ public class MainView extends JFrame {
 				break;
 			}
 		}
+	}
+
+	public void addMainViewWindowListener(WindowListener listener) {
+		this.addWindowListener(listener);
 	}
 }

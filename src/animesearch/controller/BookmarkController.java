@@ -2,6 +2,9 @@ package animesearch.controller;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.util.ArrayList;
 
 import animesearch.model.AnimeInfo;
@@ -30,6 +33,51 @@ public class BookmarkController {
 				AnimeInfo animeInfo = animeInfoList.get(bookmarkView.getSelectedAnimeIndex());
 				animeInfo.setCharacters(DatabaseManager.getInstance().getAnimeCharacters(animeInfo.getId()));
 				delegate.showItemToInfoView(animeInfo);
+			}
+		});
+
+		bookmarkView.addBookmarkViewWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				refreshView();
 			}
 		});
 	}

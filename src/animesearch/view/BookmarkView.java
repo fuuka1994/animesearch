@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowListener;
 import java.util.List;
 import java.awt.EventQueue;
 
@@ -36,8 +37,7 @@ public class BookmarkView extends JFrame {
 	private static final String UBM1 = "img/bookmark_delete_gray.png";
 	private static final String UBM2 = "img/bookmark_delete.png";
 	private static final String ANIME_COVER_FOLDER = "AnimeCover/";
-	
-	
+
 	private JPanel contentPane;
 	private JPanel buttonPane;
 	private ImageButton bookmarkButton;
@@ -59,23 +59,23 @@ public class BookmarkView extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		buttonPane = new JPanel();
 		buttonPane.setBounds(5, 5, 60, 350);
 		contentPane.add(buttonPane);
 		buttonPane.setLayout(null);
 		buttonPane.setBackground(Theme.getColor(3));
-		
+
 		bookmarkButton = new ImageButton(BM1, BM2, 50, 50);
 		bookmarkButton.setToolTipText("Bookmark");
 		bookmarkButton.setBounds(5, 120, 50, 50);
 		buttonPane.add(bookmarkButton);
-		
+
 		unbookmarkButton = new ImageButton(UBM1, UBM2, 50, 50);
 		unbookmarkButton.setToolTipText("Unbookmark");
 		unbookmarkButton.setBounds(5, 180, 50, 50);
 		buttonPane.add(unbookmarkButton);
-		
+
 		JScrollPane bookmarkListPane = new JScrollPane();
 		bookmarkListPane.setBounds(70, 5, 500, 350);
 		contentPane.add(bookmarkListPane);
@@ -85,9 +85,9 @@ public class BookmarkView extends JFrame {
 		bookmarkList.setModel(bookmarkListModel);
 		bookmarkList.setBackground(Theme.getColor(3));
 		bookmarkListPane.setViewportView(bookmarkList);
-		
+
 	}
-	
+
 	private JPanel getResultPanel(AnimeInfo animeInfo) {
 		JPanel resultPanel = new JPanel();
 		resultPanel.setPreferredSize(new Dimension(380, 120));
@@ -107,20 +107,21 @@ public class BookmarkView extends JFrame {
 		name2Label.setBounds(120, 50, 250, 30);
 		name2Label.setForeground(Theme.getColor(4));
 		resultPanel.add(name2Label);
-		
+
 		JTextArea noteLabel = new JTextArea(animeInfo.getBookmarkNote());
 		noteLabel.setBounds(120, 90, 250, 20);
 		noteLabel.setForeground(Theme.getColor(4));
 		noteLabel.setLineWrap(true);
 		noteLabel.setWrapStyleWord(true);
 		Font font = new Font("Verdana", Font.BOLD, 11);
-		noteLabel.setFont(font);;
+		noteLabel.setFont(font);
+		;
 		noteLabel.setToolTipText(animeInfo.getBookmarkNote());
 		resultPanel.add(noteLabel);
 
 		return resultPanel;
 	}
-	
+
 	class PanelListCellRenderer implements ListCellRenderer<JPanel> {
 
 		@Override
@@ -137,7 +138,7 @@ public class BookmarkView extends JFrame {
 			}
 		}
 	}
-	
+
 	public void setListOfResult(List<AnimeInfo> animeInfoList) {
 		bookmarkListModel.clear();
 		resultRenderer = new PanelListCellRenderer();
@@ -146,7 +147,7 @@ public class BookmarkView extends JFrame {
 			bookmarkListModel.addElement(getResultPanel(animeInfo));
 		}
 	}
-	
+
 	public void setbookmarkListListener(MouseListener listener) {
 		bookmarkList.addMouseListener(listener);
 	}
@@ -154,13 +155,16 @@ public class BookmarkView extends JFrame {
 	public int getSelectedAnimeIndex() {
 		return bookmarkList.getSelectedIndex();
 	}
-	
+
 	public void addBookmarkButtonActionListener(ActionListener listener) {
 		bookmarkButton.addActionListener(listener);
 	}
-	
+
 	public void addUnbookmarkButtonActionListener(ActionListener listener) {
 		unbookmarkButton.addActionListener(listener);
 	}
 
+	public void addBookmarkViewWindowListener(WindowListener listener) {
+		this.addWindowListener(listener);
+	}
 }
