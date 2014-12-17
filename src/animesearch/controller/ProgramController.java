@@ -306,7 +306,7 @@ public class ProgramController implements BookmarkViewDelegate {
 	}
 
 	@Override
-	public void showItemToInfoView(AnimeInfo animeInfo) {
+	public void showItemToInfoView(final AnimeInfo animeInfo) {
 		// TODO Auto-generated method stub
 		mainView.setInformation(animeInfo);
 		mainView.setListOfCharacter(animeInfo);
