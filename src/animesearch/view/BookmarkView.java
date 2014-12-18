@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowListener;
+import java.util.Collections;
 import java.util.List;
 import java.awt.EventQueue;
 
@@ -40,7 +41,7 @@ public class BookmarkView extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel buttonPane;
-	private ImageButton bookmarkButton;
+	private ImageButton noteButton;
 	private ImageButton unbookmarkButton;
 	private JList<JPanel> bookmarkList;
 	private DefaultListModel<JPanel> bookmarkListModel;
@@ -50,10 +51,11 @@ public class BookmarkView extends JFrame {
 	 * Create the frame.
 	 */
 	public BookmarkView() {
+		setTitle("Bookmarks Manager");
 		setType(Type.POPUP);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(0, 0, 580, 388);
+		setBounds(0, 0, 580, 588);
 		getContentPane().setBackground(Theme.getColor(2));
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -61,23 +63,23 @@ public class BookmarkView extends JFrame {
 		contentPane.setLayout(null);
 
 		buttonPane = new JPanel();
-		buttonPane.setBounds(5, 5, 60, 350);
+		buttonPane.setBounds(5, 5, 60, 550);
 		contentPane.add(buttonPane);
 		buttonPane.setLayout(null);
 		buttonPane.setBackground(Theme.getColor(3));
 
-		bookmarkButton = new ImageButton(BM1, BM2, 50, 50);
-		bookmarkButton.setToolTipText("Bookmark");
-		bookmarkButton.setBounds(5, 120, 50, 50);
-		buttonPane.add(bookmarkButton);
+		noteButton = new ImageButton(BM1, BM2, 50, 50);
+		noteButton.setToolTipText("Edit Note");
+		noteButton.setBounds(5, 280, 50, 50);
+		buttonPane.add(noteButton);
 
 		unbookmarkButton = new ImageButton(UBM1, UBM2, 50, 50);
 		unbookmarkButton.setToolTipText("Unbookmark");
-		unbookmarkButton.setBounds(5, 180, 50, 50);
+		unbookmarkButton.setBounds(5, 220, 50, 50);
 		buttonPane.add(unbookmarkButton);
 
 		JScrollPane bookmarkListPane = new JScrollPane();
-		bookmarkListPane.setBounds(70, 5, 500, 350);
+		bookmarkListPane.setBounds(70, 5, 500, 550);
 		contentPane.add(bookmarkListPane);
 
 		bookmarkList = new JList<JPanel>();
@@ -143,6 +145,7 @@ public class BookmarkView extends JFrame {
 		bookmarkListModel.clear();
 		resultRenderer = new PanelListCellRenderer();
 		bookmarkList.setCellRenderer(resultRenderer);
+		Collections.reverse(animeInfoList);
 		for (AnimeInfo animeInfo : animeInfoList) {
 			bookmarkListModel.addElement(getResultPanel(animeInfo));
 		}
@@ -156,8 +159,8 @@ public class BookmarkView extends JFrame {
 		return bookmarkList.getSelectedIndex();
 	}
 
-	public void addBookmarkButtonActionListener(ActionListener listener) {
-		bookmarkButton.addActionListener(listener);
+	public void addNoteButtonActionListener(ActionListener listener) {
+		noteButton.addActionListener(listener);
 	}
 
 	public void addUnbookmarkButtonActionListener(ActionListener listener) {

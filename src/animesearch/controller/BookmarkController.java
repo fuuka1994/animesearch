@@ -1,5 +1,7 @@
 package animesearch.controller;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
@@ -7,11 +9,14 @@ import java.awt.event.WindowListener;
 import java.awt.event.WindowStateListener;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import animesearch.model.AnimeInfo;
 import animesearch.model.DatabaseManager;
 import animesearch.view.BookmarkView;
 
 public class BookmarkController {
+	private DatabaseManager modelManager;
 	private BookmarkView bookmarkView;
 	private ArrayList<AnimeInfo> animeInfoList;
 
@@ -22,6 +27,8 @@ public class BookmarkController {
 		if (bookmarkView == null) {
 			bookmarkView = new BookmarkView();
 		}
+		
+		modelManager = DatabaseManager.getInstance();
 
 		animeInfoList = DatabaseManager.getInstance().getBookmarkedAnime();
 		bookmarkView.setListOfResult(animeInfoList);
@@ -33,6 +40,27 @@ public class BookmarkController {
 				AnimeInfo animeInfo = animeInfoList.get(bookmarkView.getSelectedAnimeIndex());
 				animeInfo.setCharacters(DatabaseManager.getInstance().getAnimeCharacters(animeInfo.getId()));
 				delegate.showItemToInfoView(animeInfo);
+			}
+		});
+		
+		bookmarkView.addNoteButtonActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String note = JOptionPane.showInputDialog(null, "Please enter a new Bookmark Note:", "Edit Bookmark Note", JOptionPane.OK_CANCEL_OPTION);
+				modelManager.updateBookmarkNote(animeInfoList.get(bookmarkView.getSelectedAnimeIndex()).getId(), note);
+				refreshView();
+			}
+		});
+		
+		bookmarkView.addUnbookmarkButtonActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				modelManager.deleteBookmark(animeInfoList.get(bookmarkView.getSelectedAnimeIndex()).getId());
+				refreshView();
 			}
 		});
 

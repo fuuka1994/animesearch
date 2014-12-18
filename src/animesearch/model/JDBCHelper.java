@@ -295,12 +295,13 @@ public class JDBCHelper
 
     public void updateBookmarkNote(int animeId, String note)
     {
-        try
+    	try
         {
-            String query = " UPDATE \"Bookmarks\" \n" +
-                    " SET note = " + note + "\n" +
+    		
+        	String query = " UPDATE \"Bookmarks\" \n" +
+                    " SET note = '" + note + "'\n" +
                     " WHERE anime_id = " + animeId + "\n";
-            statement.executeUpdate(query);
+        	statement.executeUpdate(query);
         }
         catch (SQLException e)
         {
