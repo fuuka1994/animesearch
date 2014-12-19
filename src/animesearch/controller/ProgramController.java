@@ -7,6 +7,7 @@ import animesearch.model.SearchFilter;
 import animesearch.view.AnimeFilter;
 import animesearch.view.BookmarkViewDelegate;
 import animesearch.view.DatabaseLoginDialog;
+import animesearch.view.DemoView;
 import animesearch.view.MainView;
 import animesearch.view.TwoStateButton;
 import animesearch.view.TwoStateButtonBookmark;
@@ -26,6 +27,7 @@ public class ProgramController implements BookmarkViewDelegate {
 	private MainView mainView;
 	private static AnimeFilter animeFilterView = null;
 	private ArrayList<AnimeInfo> arrayResultSearch;
+	private static DemoView demoView = DemoView.getInstance();
 
 	private static DatabaseLoginDialog loginDialog = null;
 	private static int numberOfLogin = 0;
@@ -69,6 +71,7 @@ public class ProgramController implements BookmarkViewDelegate {
 		showRecommendedAnime();
 
 		mainView.setVisible(true);
+		demoView.setVisible(true);
 	}
 
 	private void addMainViewWindowListener() {
@@ -122,6 +125,7 @@ public class ProgramController implements BookmarkViewDelegate {
 	private void showRecommendedAnime() {
 		// TODO Auto-generated method stub
 		mainView.setRandomAnime(modelManager.getRandomAnime());
+		demoView.setResultText(modelManager.getLastQuery());
 	}
 
 	private void addLoveButtonListener() {
@@ -134,8 +138,10 @@ public class ProgramController implements BookmarkViewDelegate {
 				if (mainView.getStateOfLoveButton() == TwoStateButtonBookmark.BOOKMARK_OFF) {
 					String note = JOptionPane.showInputDialog("Input note", "Note goes here");
 					modelManager.addBookmark(arrayResultSearch.get(mainView.getSelectedAnimeIndex()).getId(), note);
+					demoView.setResultText(modelManager.getLastQuery());
 				} else {
 					modelManager.deleteBookmark(arrayResultSearch.get(mainView.getSelectedAnimeIndex()).getId());
+					demoView.setResultText(modelManager.getLastQuery());
 				}
 			}
 		});
@@ -208,11 +214,14 @@ public class ProgramController implements BookmarkViewDelegate {
 				mainView.setInformation(animeInfo);
 				animeInfo.setCharacters(modelManager.getAnimeCharacters(animeInfo.getId()));
 
+				demoView.setResultText(modelManager.getLastQuery());
+
 				mainView.setProducerLabelMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						arrayResultSearch = modelManager.searchAnimeByProducer(animeInfo.getProducer());
 						mainView.setListOfResult(arrayResultSearch);
+						demoView.setResultText(modelManager.getLastQuery());
 					}
 				});
 
@@ -225,6 +234,8 @@ public class ProgramController implements BookmarkViewDelegate {
 					System.out.println(modelManager.checkBookmarkState(animeInfo));
 					mainView.setStateOfLoveButton(TwoStateButtonBookmark.BOOKMARK_OFF);
 				}
+
+				demoView.setResultText(modelManager.getLastQuery());
 			}
 		});
 
@@ -289,6 +300,8 @@ public class ProgramController implements BookmarkViewDelegate {
 					arrayResultSearch = modelManager.searchAnimeByCharacter(text);
 					mainView.setListOfResult(arrayResultSearch);
 				}
+
+				demoView.setResultText(modelManager.getLastQuery());
 			}
 		});
 	}
@@ -319,5 +332,11 @@ public class ProgramController implements BookmarkViewDelegate {
 		});
 
 		mainView.setLoveButtonEnabledState(false);
+	}
+
+	@Override
+	public void showQueryToDemoView() {
+		// TODO Auto-generated method stub
+		demoView.setResultText(modelManager.getLastQuery());
 	}
 }

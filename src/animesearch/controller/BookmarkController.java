@@ -48,9 +48,12 @@ public class BookmarkController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				String note = JOptionPane.showInputDialog(null, "Please enter a new Bookmark Note:", "Edit Bookmark Note", JOptionPane.OK_CANCEL_OPTION);
-				modelManager.updateBookmarkNote(animeInfoList.get(bookmarkView.getSelectedAnimeIndex()).getId(), note);
-				refreshView();
+				if (bookmarkView.getSelectedAnimeIndex() != -1) {
+					String note = JOptionPane.showInputDialog(null, "Please enter a new Bookmark Note:", "Edit Bookmark Note", JOptionPane.OK_CANCEL_OPTION);
+					modelManager.updateBookmarkNote(animeInfoList.get(bookmarkView.getSelectedAnimeIndex()).getId(), note);
+					refreshView();
+					delegate.showQueryToDemoView();
+				}
 			}
 		});
 		
@@ -59,8 +62,11 @@ public class BookmarkController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				modelManager.deleteBookmark(animeInfoList.get(bookmarkView.getSelectedAnimeIndex()).getId());
-				refreshView();
+				if (bookmarkView.getSelectedAnimeIndex() != -1) {
+					modelManager.deleteBookmark(animeInfoList.get(bookmarkView.getSelectedAnimeIndex()).getId());
+					refreshView();
+					delegate.showQueryToDemoView();
+				}
 			}
 		});
 
