@@ -38,7 +38,7 @@ public class QueryBuilder
         {
             query += " AND tag IN " + searchFilter.getMustHaveGenreInSql();
         }
-        query += " GROUP BY a.id HAVING COUNT(tag) >= "
+        query += " GROUP BY a.id HAVING COUNT(DISTINCT tag) >= "
                 + searchFilter.getNumberOfMustHaveGenre() + "\n";
 
         if (searchFilter.getNumberOfExcludedGenre() != 0)
