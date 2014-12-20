@@ -44,6 +44,7 @@ public class MainView extends JFrame {
 		this.setResizable(false);
 		this.setTitle(TITLE);
 		this.setBounds(50, 5, 1200, 750);
+		this.setLocationRelativeTo(null);  //Center window on screen
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(new BorderLayout());
 		this.getContentPane().setBackground(Theme.getColor(2));
@@ -52,6 +53,7 @@ public class MainView extends JFrame {
 		topPanel.setBackground(Theme.getColor(0));
 		topPanel.setPreferredSize(new Dimension(1000, 200));
 		topPanel.setLayout(new BorderLayout());
+		topPanel.setBorder(BorderFactory.createRaisedBevelBorder());
 		this.getContentPane().add(topPanel, BorderLayout.NORTH);
 
 		ImageLabel bannerLabel = new ImageLabel(BANNERURL, 800, 150);
@@ -104,6 +106,7 @@ public class MainView extends JFrame {
 		bottomPanel.setLayout(null);
 		bottomPanel.setPreferredSize(new Dimension(1200, 520));
 		bottomPanel.setOpaque(false);
+		topPanel.setBorder(BorderFactory.createLoweredBevelBorder());
 		this.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 
 		JScrollPane leftPane = new JScrollPane();
