@@ -96,6 +96,14 @@ public class SearchFilter implements Serializable
         return endSeason != null;
     }
 
+    public boolean hasSeason() {
+        return hasStartSeason() || hasEndSeason();
+    }
+
+    public boolean hasGenre() {
+        return hasExcludedGenre() || hasMustHaveGenre();
+    }
+
     public String getExcludedGenreInSql()
     {
         return excludedGenreSQL;
@@ -106,14 +114,20 @@ public class SearchFilter implements Serializable
         return mustHaveGenreSQL;
     }
 
-    public int getNumberOfMustHaveGenre()
-    {
+    public boolean hasMustHaveGenre() {
+        return nMustHaveGenre > 0;
+    }
+
+    public boolean hasExcludedGenre() {
+        return nExcludedGenre > 0;
+    }
+
+    public int getNumberOfMustHaveGenre() {
         return nMustHaveGenre;
     }
 
-    public int getNumberOfExcludedGenre()
-    {
-        return nExcludedGenre;
+    public int getNumberOfExcludedGenre() {
+        return nMustHaveGenre;
     }
 
     public String getStartSeason()

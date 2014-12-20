@@ -168,22 +168,28 @@ public class JDBCHelper
     }
     private void updateGenreAndSeasonInfo(ArrayList<AnimeInfo> list)
     {
-        String sql;
         ResultSet rs = null;
+        boolean firstSample = true;
 
         for (AnimeInfo anime : list)
         {
             try
             {
-                sql = QueryBuilder.buildGetAnimeSeason(anime.getId());
+                String sql = QueryBuilder.buildGetAnimeSeason(anime.getId());
                 rs = statement.executeQuery(sql);
                 rs.next();
                 anime.setSeason(rs.getString(SEASON_COLUMN));
 
-                sql = QueryBuilder.buildGetAnimeGenre(anime.getId());
-                rs = statement.executeQuery(sql);
+                String sql2 = QueryBuilder.buildGetAnimeGenre(anime.getId());
+                rs = statement.executeQuery(sql2);
                 rs.next();
                 anime.setGenre(rs.getString(GENRE_COLUMN));
+
+                if (firstSample) {
+                    lastQuery += "\n\n Sample of getting anime seasons:\n" + sql +
+                            "\n\nSample of getting anime genre:\n" + sql2;
+                    firstSample = false;
+                }
             }
             catch (SQLException e)
             {
@@ -244,8 +250,8 @@ public class JDBCHelper
     {
         try
         {
-            String query = " SELECT COUNT(id) AS number_anime FROM \"Anime_\" \n";
-            ResultSet rs = statement.executeQuery(query);
+            String lastQuery = " SELECT COUNT(id) AS number_anime FROM \"Anime_\" \n";
+            ResultSet rs = statement.executeQuery(lastQuery);
             rs.next();
             return rs.getInt("number_anime");
         }
@@ -282,11 +288,13 @@ public class JDBCHelper
         if (note == null)
             note = "";
 
-        String query = "insert into \"Bookmarks\" values (" + animeId
-                + ", '" + note + "')";
         try
         {
-            statement.executeUpdate(query);
+            String lastQuery = "INSERT INTO \"Bookmarks\" \nVALUES (" + animeId
+                    + ", '" + note + "')";
+            startTimeCounter();
+            statement.executeUpdate(lastQuery);
+            stopTimeCounter();
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -298,10 +306,12 @@ public class JDBCHelper
     	try
         {
     		
-        	String query = " UPDATE \"Bookmarks\" \n" +
+        	lastQuery = " UPDATE \"Bookmarks\" \n" +
                     " SET note = '" + note + "'\n" +
                     " WHERE anime_id = " + animeId + "\n";
-        	statement.executeUpdate(query);
+            startTimeCounter();
+        	statement.executeUpdate(lastQuery);
+            stopTimeCounter();
         }
         catch (SQLException e)
         {
@@ -337,10 +347,10 @@ public class JDBCHelper
 
     void deleteBookmark(int animeId)
     {
-        String sql = " DELETE FROM \"Bookmarks\" WHERE anime_id=" + animeId;
+        String lastQuery = " DELETE FROM \"Bookmarks\" WHERE anime_id=" + animeId;
         try
         {
-            statement.executeUpdate(sql);
+            statement.executeUpdate(lastQuery);
         }
         catch (SQLException e)
         {

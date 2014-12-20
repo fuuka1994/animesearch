@@ -42,14 +42,14 @@ public class DatabaseManager
     public ArrayList<AnimeInfo> searchAnimeByName(String approximateName)
     {
         approximateName = escapeSqlString(approximateName);
-        String query = QueryBuilder.buildSearchAnimeByNameQuery(approximateName, searchFilter);
+        String query = QueryBuilder.buildSearchAnimeByName(approximateName, searchFilter);
         return jdbcHelper.queryAnime(query, false);
     }
 
     public ArrayList<AnimeInfo> searchAnimeByCharacter(String approximateName)
     {
         approximateName = escapeSqlString(approximateName);
-        String query = QueryBuilder.buildSearchAnimeByCharacterQuery(approximateName, searchFilter);
+        String query = QueryBuilder.buildSearchAnimeByCharacter(approximateName, searchFilter);
         return jdbcHelper.queryAnime(query, true);
     }
 
