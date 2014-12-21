@@ -31,6 +31,7 @@ public class JDBCHelper
     private Statement statement = null;
     private String lastQuery;
     private long queryRuntime;
+    private int count;
 
     JDBCHelper()
     {
@@ -109,6 +110,10 @@ public class JDBCHelper
 
     ArrayList<AnimeInfo> queryAnime(String query, boolean queryByCharater)
     {
+        if (count == 0) {
+            count = 1;
+        }
+
         ArrayList<AnimeInfo> animeList = new ArrayList<>();
         try
         {
@@ -169,7 +174,6 @@ public class JDBCHelper
     private void updateGenreAndSeasonInfo(ArrayList<AnimeInfo> list)
     {
         ResultSet rs = null;
-        boolean firstSample = true;
 
         for (AnimeInfo anime : list)
         {
@@ -185,10 +189,10 @@ public class JDBCHelper
                 rs.next();
                 anime.setGenre(rs.getString(GENRE_COLUMN));
 
-                if (firstSample) {
+                if (count == 1) {
                     lastQuery += "\n\n Sample of getting anime seasons:\n" + sql +
                             "\n\nSample of getting anime genre:\n" + sql2;
-                    firstSample = false;
+                    count = 2;
                 }
             }
             catch (SQLException e)

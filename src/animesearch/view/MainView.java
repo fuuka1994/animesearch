@@ -327,10 +327,21 @@ public class MainView extends JFrame {
 
 	public void setListOfResult(List<AnimeInfo> animeInfoList) {
 		resultListModel.clear();
+		resultListModel.setSize(animeInfoList.size());
 		resultRenderer = new PanelListCellRenderer();
 		resultList.setCellRenderer(resultRenderer);
-		for (final AnimeInfo animeInfo : animeInfoList) {
-			resultListModel.addElement(getResultPanel(animeInfo));
+		for (int i = 0; i < animeInfoList.size(); i++) {
+			final AnimeInfo animeInfo = animeInfoList.get(i);
+			final int index = i;
+
+			(new Thread() {
+				@Override
+				public void run() {
+					synchronized (resultListModel) {
+						resultListModel.set(index, getResultPanel(animeInfo));
+					}
+				}
+			}).start();
 		}
 	}
 
@@ -339,9 +350,6 @@ public class MainView extends JFrame {
 		characterRenderer = new PanelListCellRenderer();
 		characterList.setCellRenderer(characterRenderer);
 		for (final CharacterInfo characterInfo : selectedAnime.getCharacters()) {
-			// For each character, create a thread to get and display character
-			// panel, with "characterListModel" as a lock to prevent errors
-			// cause by thread interference
 			(new Thread() {
 				@Override
 				public void run() {
