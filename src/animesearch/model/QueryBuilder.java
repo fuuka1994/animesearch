@@ -200,7 +200,7 @@ public class QueryBuilder {
         from.append("\"Characters\" C")
                 .append("(" + nameFilterQuery + ") A");
         where.append("A.id = C.anime_id")
-                .append("UPPER(C.name) LIKE UPPER('%" + approximateName + "%')");
+                .append("UPPER(C.name) LIKE UPPER('%" + approximateName + "%') LIMIT 100");
 
         return buildQuery();
     }

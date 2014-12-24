@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainView extends JFrame {
@@ -155,6 +156,7 @@ public class MainView extends JFrame {
 		JPanel resultPanel = new JPanel();
 		resultPanel.setPreferredSize(new Dimension(380, 100));
 		resultPanel.setBackground(Theme.getColor(0));
+		resultPanel.setBorder(BorderFactory.createMatteBorder(2, 0, 2, 0, Color.GRAY));
 		resultPanel.setLayout(null);
 
 		if (animeInfo.getMatchedCharacter() == null) {
@@ -199,6 +201,7 @@ public class MainView extends JFrame {
 		JPanel characterPanel = new JPanel();
 		characterPanel.setPreferredSize(new Dimension(130, 150));
 		characterPanel.setBackground(Theme.getColor(0));
+		characterPanel.setBorder(BorderFactory.createMatteBorder(2, 0, 2, 0, Color.GRAY));
 		characterPanel.setLayout(null);
 		characterPanel.setToolTipText(characterInfo.getName());
 
@@ -346,15 +349,19 @@ public class MainView extends JFrame {
 	}
 
 	public void setListOfCharacter(AnimeInfo selectedAnime) {
+		ArrayList<CharacterInfo> characters = selectedAnime.getCharacters();
 		characterListModel.clear();
+		characterListModel.setSize(characters.size());
 		characterRenderer = new PanelListCellRenderer();
 		characterList.setCellRenderer(characterRenderer);
-		for (final CharacterInfo characterInfo : selectedAnime.getCharacters()) {
+		for (int i = 0; i < characters.size(); i++) {
+			final CharacterInfo characterInfo = characters.get(i);
+			final int index = i;
 			(new Thread() {
 				@Override
 				public void run() {
 					synchronized (characterListModel) {
-						characterListModel.addElement(getCharacterPanel(characterInfo));
+						characterListModel.set(index, getCharacterPanel(characterInfo));
 					}
 				}
 			}).start();
