@@ -127,7 +127,7 @@ public class SearchFilter implements Serializable
     }
 
     public int getNumberOfExcludedGenre() {
-        return nMustHaveGenre;
+        return nExcludedGenre;
     }
 
     public String getStartSeason()
