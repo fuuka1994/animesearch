@@ -1,7 +1,7 @@
 ﻿READ ME FIRST
 
 - Project sử dụng IDE là eclipse.
-- Project có kèm resource là ảnh, hiện tại app chỉ có thể chạy khi có ảnh nên mong thầy down về và giải nén 2 file sau vào thư mục src/animesearch/view
+- Project có kèm resource là ảnh, hiện tại app chỉ có thể chạy khi có ảnh nên cần down về và giải nén 2 file sau vào thư mục src/animesearch/view
 	https://mega.co.nz/#!PoYSgKIA!rH8GN8azZPdwonbAxTlw1Qfpqv45NK0sqS4pXVWrSpI
 	https://mega.co.nz/#!zpAGWRhL!WxlvEbxsNa8DPEZQMm40N-QrgBqLU2zcooPlS1UWaKI
 - Dùng pgAdmin tạo database tên là animedb, sau đó restore file pgAdmin_animedb.backup vào.
