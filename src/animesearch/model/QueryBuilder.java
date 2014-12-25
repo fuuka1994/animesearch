@@ -44,13 +44,13 @@ public class QueryBuilder {
         if (filter.hasStartSeason()) {
             String startSeason = filter.getStartSeason();
             String startYear = extractYear(startSeason);
-            where.append("S.year > " + startYear);
+            where.append("S.year >= " + startYear);
         }
 
         if (filter.hasEndSeason()) {
-            String endSeason = filter.getStartSeason();
+            String endSeason = filter.getEndSeason();
             String endYear = extractYear(endSeason);
-            where.append("S.year < " + endYear);
+            where.append("S.year <= " + endYear);
         }
 
         String query = buildQuery();
@@ -67,7 +67,7 @@ public class QueryBuilder {
             String aSeason = extractSeasonInYear(startSeason);
             String allSeasonFromThis = retrieveSeasonInStartYear(aSeason);
             String subQuery = selectAnimeInSeason(year, allSeasonFromThis);
-            query += "UNION\n" + subQuery;
+            query += "EXCEPT\n" + subQuery;
         }
 
         if (filter.hasEndSeason()) {
@@ -76,7 +76,7 @@ public class QueryBuilder {
             String aSeason = extractSeasonInYear(endSeason);
             String allSeasonToThis = retrieveSeasonInEndYear(aSeason);
             String subQuery = selectAnimeInSeason(year, allSeasonToThis);
-            query += "UNION\n" + subQuery;
+            query += "EXCEPT\n" + subQuery;
         }
 
         return query;
@@ -156,14 +156,15 @@ public class QueryBuilder {
     }
 
     private static String retrieveSeasonInStartYear(String startSeason) {
-        boolean seasonFound = false;
+        if (startSeason.equals("Spring"))
+            return "('')";    //Can't be matched
+
         String seasonInStartYear = "(";
 
         for (String season : seasonInYear) {
             if (season.equals(startSeason)) {
-                seasonFound = true;
-            }
-            if (seasonFound) {
+                break;
+            } else {
                 seasonInStartYear += "'" + season + "',";
             }
         }
@@ -174,12 +175,16 @@ public class QueryBuilder {
     }
 
     private static String retrieveSeasonInEndYear(String endSeason) {
+        if (endSeason.equals("Winter"))
+            return "('')";    //Can't be matched
+
         String seasonInEndYear = "(";
 
-        for (String season : seasonInYear) {
-            seasonInEndYear += "'" + season + "',";
-            if (season.equals(endSeason)) {
+        for (int i = seasonInYear.length-1; i >= 0; i--) {
+            if (seasonInYear[i].equals(endSeason)) {
                 break;
+            } else {
+                seasonInEndYear += "'" + seasonInYear[i] + "',";
             }
         }
         seasonInEndYear = seasonInEndYear.substring(0, seasonInEndYear.length() - 1);
