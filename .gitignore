@@ -26,8 +26,5 @@ AnimeSearch.iml
 .idea
 lib
 out
-src/animesearch/view/img
 /bin/
-src/animesearch/view/CharacterImage/
-src/animesearch/view/AnimeCover/
 LoginInfo.ser
